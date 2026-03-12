@@ -1,4 +1,3 @@
-// src/components/map/BusMarker.jsx
 import { Marker } from "react-map-gl/mapbox";
 import { ROUTES } from "../../services/mockShuttleData";
 import { getBusPosition } from "../../utils/calculateETA";

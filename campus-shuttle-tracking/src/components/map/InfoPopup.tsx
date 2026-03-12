@@ -1,4 +1,3 @@
-// src/components/map/InfoPopup.jsx
 import { Popup } from "react-map-gl/mapbox";
 import { ROUTES } from "../../services/mockShuttleData";
 import {

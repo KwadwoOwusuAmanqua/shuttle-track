@@ -1,4 +1,3 @@
-// src/components/map/RouteLayer.jsx
 import { Source, Layer } from "react-map-gl/mapbox";
 import { ROUTES, ROUTE_PATHS } from "../../services/mockShuttleData";
 

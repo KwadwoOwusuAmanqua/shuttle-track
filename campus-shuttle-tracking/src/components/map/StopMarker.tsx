@@ -1,4 +1,3 @@
-// src/components/map/StopMarker.jsx
 import { Marker } from "react-map-gl/mapbox";
 import { ROUTES } from "../../services/mockShuttleData";
 import type { Stop } from "../../types/shuttle";

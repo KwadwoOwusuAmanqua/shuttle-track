@@ -99,7 +99,7 @@ export const STOPS: Stop[] = [
     id: "B6",
     routeId: "B",
     name: "Katanga Hall",
-    coords: [-1.5734633706141377, 6.672580005602448], // approx — refine on Google Maps
+    coords: [-1.5734633706141377, 6.672580005602448],
     order: 5,
   },
 
@@ -163,11 +163,11 @@ export const ROUTE_PATHS: Record<string, [number, number][]> = {
   ],
 
   // Route B: Brunei → KSB → back to Brunei
-  // Removed shared coords with Route A — unique path throughout
+
   B: [
-    [-1.5741732323185718, 6.6704642801376535],
-    [-1.573811341027895, 6.670789127487988],
-    [-1.5735674717471262, 6.671273442289296],
+    [-1.5741732323185718, 6.6704642801376535], //Brunei Bus Stop
+    [-1.573811341027895, 6.670789127487988], //Old Brunei Junction
+    [-1.5735674717471262, 6.671273442289296], //
     [-1.5734320890911921, 6.672653379351118],
     [-1.5726626205160565, 6.673403482254454],
     [-1.5722921356607267, 6.675073518473529],
@@ -258,6 +258,6 @@ export const MOCK_BUSES: Bus[] = [
   },
 ];
 
-// Average shuttle speed on KNUST roads: ~20 km/h → ~333 m/min
-// 1 degree lat/lng ≈ 111km, so per-degree speed ≈ 0.003 deg/s at 20km/h
+// Average shuttle speed on KNUST roads: ~20 km/h → ~333 m/min (will implement a better algortihm later that accounts for stop dwell time, traffic, etc.)
+// But for now 1 degree lat/lng ≈ 111km, so per-degree speed ≈ 0.003 deg/s at 20km/h
 export const AVG_SPEED_DEG_PER_SEC = 0.003;

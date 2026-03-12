@@ -1,4 +1,3 @@
-// src/components/map/MapView.jsx
 import { useState, useEffect, useRef } from "react";
 import Map from "react-map-gl/mapbox";
 
@@ -18,7 +17,7 @@ export default function MapView() {
     MOCK_BUSES.map((b) => ({ ...b })), // clone so we can mutate pathIndex
   );
   const [selection, setSelection] = useState<SelectionType | null>(null); // { type: 'bus'|'stop', data }
-  const animFrameRef = useRef(null);
+  //const animFrameRef = useRef(null);
 
   // Animate buses — move each bus forward along its path on each tick
   useEffect(() => {
@@ -33,7 +32,7 @@ export default function MapView() {
           return { ...bus, pathIndex: next };
         }),
       );
-    }, 100); // update every 100ms = smooth animation
+    }, 100); // update every 100ms
 
     return () => clearInterval(interval);
   }, []);

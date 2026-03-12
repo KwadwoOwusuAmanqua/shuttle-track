@@ -1,4 +1,3 @@
-// src/pages/student/Map.jsx
 import MapView from "../../components/map/MapView";
 
 export default function MapPage() {
