@@ -1,0 +1,40 @@
+// src/components/map/BusMarker.jsx
+import { Marker } from "react-map-gl/mapbox";
+import { ROUTES } from "../../services/mockShuttleData";
+import { getBusPosition } from "../../utils/calculateETA";
+import type { Bus } from "../../types/shuttle";
+
+interface Props {
+  bus: Bus;
+  onClick: (bus: Bus) => void;
+}
+
+export default function BusMarker({ bus, onClick }: Props) {
+  const [lng, lat] = getBusPosition(bus);
+  const route = ROUTES[bus.routeId];
+
+  return (
+    <Marker longitude={lng} latitude={lat} anchor="center">
+      <div
+        onClick={() => onClick(bus)}
+        title={bus.name}
+        style={{
+          width: 36,
+          height: 36,
+          borderRadius: "50%",
+          backgroundColor: route.color,
+          border: "3px solid white",
+          boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          cursor: "pointer",
+          fontSize: 18,
+          transition: "transform 0.1s ease",
+        }}
+      >
+        🚌
+      </div>
+    </Marker>
+  );
+}
