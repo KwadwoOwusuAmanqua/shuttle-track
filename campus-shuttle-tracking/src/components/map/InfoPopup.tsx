@@ -1,19 +1,28 @@
 import { Popup } from "react-map-gl/mapbox";
-import { ROUTES } from "../../services/mockShuttleData";
 import {
   getETAsForBus,
   getClosestBusToStop,
   getBusPosition,
 } from "../../utils/calculateETA";
-import type { Bus, SelectionType } from "../../types/shuttle";
+import type { SelectionType, Bus, Route, Stop } from "../../types/shuttle";
 
 interface Props {
   selection: SelectionType;
   buses: Bus[];
+  routes: Record<string, Route>;
+  stops: Stop[];
+  routePaths: Record<string, { lat: number; lng: number }[]>;
   onClose: () => void;
 }
 
-export default function InfoPopup({ selection, buses, onClose }: Props) {
+export default function InfoPopup({
+  selection,
+  buses,
+  routes,
+  stops,
+  routePaths,
+  onClose,
+}: Props) {
   if (!selection) return null;
 
   const isBus = selection.type === "bus";
@@ -22,10 +31,9 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
   let lng: number, lat: number, content: React.ReactNode;
 
   if (isBus) {
-    [lng, lat] = getBusPosition(selection.data);
-    const route = ROUTES[selection.data.routeId];
-    const etas = getETAsForBus(selection.data);
-    const isDwelling = selection.data.dwellRemaining > 0;
+    ({ lat, lng } = getBusPosition(selection.data, routePaths));
+    const route = routes[selection.data.routeId];
+    const etas = getETAsForBus(selection.data, buses, stops, routePaths);
 
     content = (
       <div style={{ minWidth: 220 }}>
@@ -42,7 +50,7 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
               width: 10,
               height: 10,
               borderRadius: "50%",
-              backgroundColor: route.color,
+              backgroundColor: route?.color ?? "#94a3b8",
               flexShrink: 0,
             }}
           />
@@ -52,22 +60,7 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
         </div>
 
         <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>
-          {route.name}
-          {isDwelling && (
-            <span
-              style={{
-                marginLeft: 8,
-                padding: "1px 6px",
-                backgroundColor: "#FEF3C7",
-                color: "#92400E",
-                borderRadius: 4,
-                fontSize: 11,
-                fontWeight: 600,
-              }}
-            >
-              AT STOP
-            </span>
-          )}
+          {route?.name}
         </div>
 
         {etas.length === 0 ? (
@@ -100,7 +93,7 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
               >
                 <span style={{ color: "#334155" }}>📍 {stop.name}</span>
                 <span
-                  style={{ color: route.color, fontWeight: 700, flexShrink: 0 }}
+                  style={{ color: route?.color ?? "#94a3b8", fontWeight: 700, flexShrink: 0 }}
                 >
                   {etaMinutes} min
                 </span>
@@ -113,9 +106,9 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
   }
 
   if (isStop) {
-    [lng, lat] = selection.data.coords;
-    const route = ROUTES[selection.data.routeId];
-    const result = getClosestBusToStop(selection.data, buses);
+    ({ lat, lng } = selection.data.coords);
+    const route = routes[selection.data.routeId];
+    const result = getClosestBusToStop(selection.data, buses, routePaths);
 
     content = (
       <div style={{ minWidth: 200 }}>
@@ -132,7 +125,7 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
               width: 10,
               height: 10,
               borderRadius: "50%",
-              backgroundColor: route.color,
+              backgroundColor: route?.color ?? "#94a3b8",
               flexShrink: 0,
             }}
           />
@@ -142,7 +135,7 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
         </div>
 
         <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>
-          {route.name}
+          {route?.name}
         </div>
 
         {result ? (
@@ -161,7 +154,7 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
             <div style={{ marginTop: 4 }}>
               Arriving in{" "}
               <span
-                style={{ color: route.color, fontWeight: 700, fontSize: 15 }}
+                style={{ color: route?.color ?? "#94a3b8", fontWeight: 700, fontSize: 15 }}
               >
                 {result.etaMinutes} min
               </span>

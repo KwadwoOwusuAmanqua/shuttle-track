@@ -10,7 +10,7 @@ export interface Stop {
   id: string;
   routeId: string;
   name: string;
-  coords: [number, number]; // [longitude, latitude]
+  coords: { lat: number; lng: number }; // [longitude, latitude]
   order: number;
 }
 
@@ -36,3 +36,10 @@ export type SelectionType =
   | { type: "bus"; data: Bus }
   | { type: "stop"; data: Stop }
   | null;
+
+export interface UserProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  role: "student" | "admin";
+}
