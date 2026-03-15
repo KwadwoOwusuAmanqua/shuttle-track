@@ -5,74 +5,84 @@ import RouteLayer from "./RouteLayer";
 import BusMarker from "./BusMarker";
 import StopMarker from "./StopMarker";
 import InfoPopup from "./InfoPopup";
-import RouteLegend from "./RouteLegend";
-import type { Bus, Route, Stop, SelectionType } from "../../types/shuttle";
+import type { Bus, SelectionType, Stop } from "../../types/shuttle";
 
 import {
-  ROUTES as MOCK_ROUTES,
-  STOPS as MOCK_STOPS,
+  STOPS,
   MOCK_BUSES,
-  ROUTE_PATHS as MOCK_ROUTE_PATHS,
+  ROUTE_PATHS,
+  STOP_PATH_INDICES,
+  DWELL_TICKS,
 } from "../../services/mockShuttleData";
-import {
-  fetchRoutes,
-  fetchStops,
-  fetchRoutePaths,
-  subscribeToBuses,
-} from "../../services/shuttleData";
+import RouteLegend from "./RouteLegend";
+import { getRouteLength, getStopDistance } from "../../utils/calculateETA";
 
 const KNUST_CENTER = { longitude: -1.575, latitude: 6.677, zoom: 15 };
-const USE_FIREBASE = !!import.meta.env.VITE_FIREBASE_API_KEY;
+
+//radius for the bus to be around the stop for it to trigger the dwelling function
+const DWELL_TRIGGER_RADIUS = 0.6;
 
 export default function MapView() {
-  const [routes, setRoutes] = useState<Record<string, Route>>(MOCK_ROUTES);
-  const [stops, setStops] = useState<Stop[]>(MOCK_STOPS);
-  const [routePaths, setRoutePaths] = useState<
-    Record<string, { lat: number; lng: number }[]>
-  >(MOCK_ROUTE_PATHS);
   const [buses, setBuses] = useState<Bus[]>(
-    MOCK_BUSES.map((b) => ({ ...b }))
+    MOCK_BUSES.map((b) => ({ ...b })), // clone so we can mutate pathIndex
   );
-  const [selection, setSelection] = useState<SelectionType | null>(null);
+  const [selection, setSelection] = useState<SelectionType | null>(null); // { type: 'bus'|'stop', data }
 
-  // Load routes, stops, paths from Firestore
   useEffect(() => {
-    if (!USE_FIREBASE) return;
-    Promise.all([fetchRoutes(), fetchStops(), fetchRoutePaths()])
-      .then(([r, s, rp]) => {
-        setRoutes(r);
-        setStops(s);
-        setRoutePaths(rp);
-      })
-      .catch(console.error);
+    setBuses((prev) =>
+      prev.map((bus) => {
+        if (bus.id === "SH-102") {
+          return { ...bus, pathIndex: getRouteLength("A") * 0.4 };
+        }
+        if (bus.id === "SH-302") {
+          return { ...bus, pathIndex: getRouteLength("B") * 0.4 };
+        }
+        return bus;
+      }),
+    );
   }, []);
 
-  // Subscribe to real-time bus updates from Firestore
+  // Animate buses — move each bus forward along its path on each tick
   useEffect(() => {
-    if (!USE_FIREBASE) return;
-    const unsubscribe = subscribeToBuses((liveBuses) => {
-      setBuses(liveBuses.map((bus) => ({ ...bus })));
-    });
-    return () => unsubscribe();
-  }, []);
-
-  // Animate buses along their paths (only used in mock/offline mode)
-  useEffect(() => {
-    if (USE_FIREBASE) return;
     const interval = setInterval(() => {
       setBuses((prev) =>
         prev.map((bus) => {
-          const path = routePaths[bus.routeId];
-          if (!path) return bus;
-          const pathLen = path.length - 1;
-          let next = bus.pathIndex + bus.speed;
-          if (next >= pathLen) next = 0;
+          //if bus is at a stop, dwell there and count down
+          if (bus.dwellRemaining > 0) {
+            return { ...bus, dwellRemaining: bus.dwellRemaining - 1 };
+          }
+
+          const total = getRouteLength(bus.routeId);
+          const next = (bus.pathIndex + bus.speed) % total;
+
+          //if route is complete, loop back to start
+          // if (next >= total) {
+          //   next = 0; // Loop back to the beginning
+          // }
+
+          // check if the bus has just crossed a stop index so that you can trigger dwell
+          const routeStops = STOPS.filter((s) => s.routeId === bus.routeId);
+          for (const stop of routeStops) {
+            const stopDist = getStopDistance(stop.id, bus.routeId);
+            const crossed =
+              bus.pathIndex % total < stopDist && next >= stopDist;
+
+            if (crossed) {
+              return {
+                ...bus,
+                pathIndex: stopDist,
+                dwellRemaining: DWELL_TICKS,
+              };
+            }
+          }
+
           return { ...bus, pathIndex: next };
-        })
+        }),
       );
-    }, 100);
+    }, 100); // update every 100ms
+
     return () => clearInterval(interval);
-  }, [routePaths]);
+  }, []);
 
   const handleBusClick = (bus: Bus) => setSelection({ type: "bus", data: bus });
   const handleStopClick = (stop: Stop) =>
@@ -87,32 +97,23 @@ export default function MapView() {
         style={{ width: "100%", height: "100%" }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
       >
-        <RouteLayer routes={routes} routePaths={routePaths} />
+        {/* Color-coded route lines */}
+        <RouteLayer />
 
-        {stops.map((stop) => (
-          <StopMarker key={stop.id} stop={stop} routes={routes} onClick={handleStopClick} />
+        {/* Stop pins */}
+        {STOPS.map((stop) => (
+          <StopMarker key={stop.id} stop={stop} onClick={handleStopClick} />
         ))}
 
+        {/* Animated bus markers */}
         {buses.map((bus) => (
-          <BusMarker
-            key={bus.id}
-            bus={bus}
-            routes={routes}
-            routePaths={routePaths}
-            onClick={handleBusClick}
-          />
+          <BusMarker key={bus.id} bus={bus} onClick={handleBusClick} />
         ))}
 
-        <InfoPopup
-          selection={selection}
-          buses={buses}
-          routes={routes}
-          stops={stops}
-          routePaths={routePaths}
-          onClose={handleClose}
-        />
+        {/* Click popup — bus or stop */}
+        <InfoPopup selection={selection} buses={buses} onClose={handleClose} />
       </Map>
-      <RouteLegend routes={routes} />
+      <RouteLegend />
     </div>
   );
 }

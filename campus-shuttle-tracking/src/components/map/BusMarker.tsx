@@ -1,17 +1,17 @@
 import { Marker } from "react-map-gl/mapbox";
+import { ROUTES } from "../../services/mockShuttleData";
 import { getBusPosition } from "../../utils/calculateETA";
-import type { Bus, Route } from "../../types/shuttle";
+import type { Bus } from "../../types/shuttle";
 
 interface Props {
   bus: Bus;
-  routes: Record<string, Route>;
-  routePaths: Record<string, { lat: number; lng: number }[]>;
   onClick: (bus: Bus) => void;
 }
 
-export default function BusMarker({ bus, routes, routePaths, onClick }: Props) {
-  const { lat, lng } = getBusPosition(bus, routePaths);
-  const route = routes[bus.routeId];
+export default function BusMarker({ bus, onClick }: Props) {
+  const [lng, lat] = getBusPosition(bus);
+  const route = ROUTES[bus.routeId];
+  const isDwelling = bus.dwellRemaining > 0;
 
   return (
     <Marker longitude={lng} latitude={lat} anchor="center">
@@ -33,9 +33,11 @@ export default function BusMarker({ bus, routes, routePaths, onClick }: Props) {
             width: 36,
             height: 36,
             borderRadius: "50%",
-            backgroundColor: route?.color ?? "#94a3b8",
+            backgroundColor: route.color,
             border: "3px solid white",
-            boxShadow: "0 2px 8px rgba(0,0,0,0.4)",
+            boxShadow: isDwelling
+              ? `0 0 0 4px ${route.color}44`
+              : "0 2px 8px rgba(0,0,0,0.4)",
             display: "flex",
             alignItems: "center",
             justifyContent: "center",

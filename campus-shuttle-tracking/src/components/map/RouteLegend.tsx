@@ -1,10 +1,6 @@
-import type { Route } from "../../types/shuttle";
+import { ROUTES } from "../../services/mockShuttleData";
 
-interface Props {
-  routes: Record<string, Route>;
-}
-
-export default function RouteLegend({ routes }: Props) {
+export default function RouteLegend() {
   return (
     <div
       style={{
@@ -30,7 +26,7 @@ export default function RouteLegend({ routes }: Props) {
       >
         ROUTES
       </p>
-      {Object.values(routes).map((route) => (
+      {Object.values(ROUTES).map((route) => (
         <div
           key={route.id}
           style={{

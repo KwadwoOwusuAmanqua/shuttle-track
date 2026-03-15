@@ -10,7 +10,7 @@ export interface Stop {
   id: string;
   routeId: string;
   name: string;
-  coords: { lat: number; lng: number }; // [longitude, latitude]
+  coords: [number, number]; // [longitude, latitude]
   order: number;
 }
 
@@ -18,8 +18,9 @@ export interface Bus {
   id: string;
   routeId: string;
   name: string;
-  pathIndex: number;
-  speed: number;
+  pathIndex: number; // distance travelled along route in degrees
+  speed: number; // degrees per tick
+  dwellRemaining: number;
 }
 
 export interface ETAResult {
@@ -36,10 +37,3 @@ export type SelectionType =
   | { type: "bus"; data: Bus }
   | { type: "stop"; data: Stop }
   | null;
-
-export interface UserProfile {
-  uid: string;
-  email: string;
-  displayName: string;
-  role: "student" | "admin";
-}

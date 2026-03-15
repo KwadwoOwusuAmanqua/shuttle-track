@@ -1,21 +1,13 @@
 import { Source, Layer } from "react-map-gl/mapbox";
-import type { Route } from "../../types/shuttle";
+import { ROUTES, ROUTE_PATHS } from "../../services/mockShuttleData";
 
-interface Props {
-  routes: Record<string, Route>;
-  routePaths: Record<string, { lat: number; lng: number }[]>; // ✅ fixed type
-}
-
-export default function RouteLayer({ routes, routePaths }: Props) {
-  return Object.values(routes).map((route) => {
+export default function RouteLayer() {
+  return Object.values(ROUTES).map((route) => {
     const geojson = {
       type: "Feature",
       geometry: {
         type: "LineString",
-        // ✅ Mapbox needs [lng, lat] arrays, so convert from { lat, lng } objects
-        coordinates: (routePaths[route.id] ?? []).map(
-          ({ lat, lng }) => [lng, lat] as [number, number]
-        ),
+        coordinates: ROUTE_PATHS[route.id],
       },
       properties: {},
     } as const;
