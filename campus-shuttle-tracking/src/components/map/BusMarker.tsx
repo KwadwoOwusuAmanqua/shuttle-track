@@ -16,7 +16,10 @@ export default function BusMarker({ bus, onClick }: Props) {
   return (
     <Marker longitude={lng} latitude={lat} anchor="center">
       <div
-        onClick={() => onClick(bus)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick(bus);
+        }}
         style={{
           width: 44,
           height: 44,

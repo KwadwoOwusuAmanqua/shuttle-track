@@ -1,6 +1,9 @@
 import { ROUTES } from "../../services/mockShuttleData";
 
-export default function RouteLegend() {
+interface Props {
+  activeRoute: string | null;
+}
+export default function RouteLegend({ activeRoute }: Props) {
   return (
     <div
       style={{
@@ -26,29 +29,34 @@ export default function RouteLegend() {
       >
         ROUTES
       </p>
-      {Object.values(ROUTES).map((route) => (
-        <div
-          key={route.id}
-          style={{
-            display: "flex",
-            alignItems: "center",
-            gap: 8,
-            marginBottom: 6,
-          }}
-        >
+      {Object.values(ROUTES).map((route) => {
+        const isActive = !activeRoute || activeRoute === route.id;
+        return (
           <div
+            key={route.id}
             style={{
-              width: 28,
-              height: 4,
-              borderRadius: 2,
-              backgroundColor: route.color,
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 6,
+              opacity: isActive ? 1 : 0.3,
+              transition: "opacity 0.2s ease",
             }}
-          />
-          <span style={{ fontSize: 13, color: "#1e293b" }}>
-            {route.id} — {route.name}
-          </span>
-        </div>
-      ))}
+          >
+            <div
+              style={{
+                width: 24,
+                height: 4,
+                borderRadius: 2,
+                backgroundColor: route.color,
+              }}
+            />
+            <span style={{ fontSize: 13, color: "#1e293b" }}>
+              {route.id} — {route.name}
+            </span>
+          </div>
+        );
+      })}
     </div>
   );
 }

@@ -6,7 +6,6 @@ import {
 } from "../services/mockShuttleData";
 import type { Bus, Stop, ETAResult, ClosestBusResult } from "../types/shuttle";
 
-// Straight-line distance between two coords in degrees
 export function distanceBetween(
   [lng1, lat1]: [number, number],
   [lng2, lat2]: [number, number],
@@ -14,10 +13,8 @@ export function distanceBetween(
   return Math.sqrt((lng2 - lng1) ** 2 + (lat2 - lat1) ** 2);
 }
 
-// Pre-compute cumulative distances along each route path
-// so we can convert "distance travelled" → position instantly
+// Pre-compute cumulative distances for every route once at module load
 const ROUTE_CUMULATIVE_DIST: Record<string, number[]> = {};
-
 for (const routeId of ["A", "B", "C", "D"]) {
   const path = ROUTE_PATHS[routeId];
   const dists = [0];
@@ -27,23 +24,22 @@ for (const routeId of ["A", "B", "C", "D"]) {
   ROUTE_CUMULATIVE_DIST[routeId] = dists;
 }
 
-// Total length of each route in degrees
 export function getRouteLength(routeId: string): number {
-  const dists = ROUTE_CUMULATIVE_DIST[routeId];
-  return dists[dists.length - 1];
+  const d = ROUTE_CUMULATIVE_DIST[routeId];
+  return d[d.length - 1];
 }
 
-// Convert a distance-along-route → [lng, lat]
-// distanceTravelled is in degrees, wraps on loop completion
+export function getStopDistance(stopId: string, routeId: string): number {
+  return ROUTE_CUMULATIVE_DIST[routeId][STOP_PATH_INDICES[stopId]];
+}
+
 export function getBusPosition(bus: Bus): [number, number] {
   const path = ROUTE_PATHS[bus.routeId];
   const dists = ROUTE_CUMULATIVE_DIST[bus.routeId];
   const total = dists[dists.length - 1];
-
-  // Wrap distance into the route length
   const d = bus.pathIndex % total;
 
-  // Binary search for which segment we're in
+  // Binary search for the segment
   let lo = 0,
     hi = dists.length - 2;
   while (lo < hi) {
@@ -52,55 +48,46 @@ export function getBusPosition(bus: Bus): [number, number] {
     else hi = mid - 1;
   }
 
-  const segStart = dists[lo];
-  const segEnd = dists[lo + 1];
-  const t = segEnd === segStart ? 0 : (d - segStart) / (segEnd - segStart);
+  const t =
+    dists[lo + 1] === dists[lo]
+      ? 0
+      : (d - dists[lo]) / (dists[lo + 1] - dists[lo]);
 
   const [lng1, lat1] = path[lo];
   const [lng2, lat2] = path[lo + 1];
-
   return [lng1 + (lng2 - lng1) * t, lat1 + (lat2 - lat1) * t];
 }
 
-// Get the cumulative distance at a stop's snap index
-// Used for dwell detection
-export function getStopDistance(stopId: string, routeId: string): number {
-  const snapIdx = STOP_PATH_INDICES[stopId];
-  return ROUTE_CUMULATIVE_DIST[routeId][snapIdx];
+// ─── KEY FIX: use AVG_SPEED_DEG_PER_SEC consistently ────────────
+function degToMinutes(distDeg: number): number {
+  const seconds = distDeg / AVG_SPEED_DEG_PER_SEC;
+  return Math.round(seconds / 60);
 }
 
-// ETA from a bus to each upcoming stop on its route
 export function getETAsForBus(bus: Bus): ETAResult[] {
-  const dists = ROUTE_CUMULATIVE_DIST[bus.routeId];
-  const total = dists[dists.length - 1];
+  const total = getRouteLength(bus.routeId);
+  const current = bus.pathIndex % total;
   const stops = STOPS.filter((s) => s.routeId === bus.routeId).sort(
     (a, b) => a.order - b.order,
   );
 
-  const currentDist = bus.pathIndex % total;
-  const results: ETAResult[] = [];
+  return stops
+    .map((stop) => {
+      const stopDist = getStopDistance(stop.id, bus.routeId);
+      let ahead = stopDist - current;
+      if (ahead <= 0) ahead += total; // wrap around loop
 
-  for (const stop of stops) {
-    const stopDist = getStopDistance(stop.id, bus.routeId);
-
-    // Distance ahead — wrap around loop if stop is behind current position
-    let distAhead = stopDist - currentDist;
-    if (distAhead <= 0) distAhead += total;
-
-    const etaSeconds = distAhead / AVG_SPEED_DEG_PER_SEC;
-    const etaMinutes = Math.round(etaSeconds / 60);
-
-    results.push({
-      stop,
-      etaMinutes: etaMinutes < 1 ? "< 1" : etaMinutes,
-    });
-  }
-
-  // Sort by who's coming up soonest
-  return results.sort((a, b) => Number(a.etaMinutes) - Number(b.etaMinutes));
+      const mins = degToMinutes(ahead);
+      return { stop, etaMinutes: mins < 1 ? "< 1" : mins };
+    })
+    .sort((a, b) => Number(a.etaMinutes) - Number(b.etaMinutes));
 }
 
-// Closest bus to a stop and its ETA
+export function getNextStop(bus: Bus): ETAResult | null {
+  const results = getETAsForBus(bus);
+  return results.length > 0 ? results[0] : null;
+}
+
 export function getClosestBusToStop(
   stop: Stop,
   buses: Bus[],
@@ -112,24 +99,18 @@ export function getClosestBusToStop(
   const total = getRouteLength(stop.routeId);
 
   let closest: Bus | null = null;
-  let minEta = Infinity;
+  let minAhead = Infinity;
 
   for (const bus of routeBuses) {
-    const currentDist = bus.pathIndex % total;
-    let distAhead = stopDist - currentDist;
-    if (distAhead <= 0) distAhead += total;
-
-    if (distAhead < minEta) {
-      minEta = distAhead;
+    const current = bus.pathIndex % total;
+    let ahead = stopDist - current;
+    if (ahead <= 0) ahead += total;
+    if (ahead < minAhead) {
+      minAhead = ahead;
       closest = bus;
     }
   }
 
-  const etaSeconds = minEta / AVG_SPEED_DEG_PER_SEC;
-  const etaMinutes = Math.round(etaSeconds / 60);
-
-  return {
-    bus: closest!,
-    etaMinutes: etaMinutes < 1 ? "< 1" : etaMinutes,
-  };
+  const mins = degToMinutes(minAhead);
+  return { bus: closest!, etaMinutes: mins < 1 ? "< 1" : mins };
 }

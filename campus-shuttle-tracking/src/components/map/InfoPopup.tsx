@@ -1,19 +1,113 @@
 import { Popup } from "react-map-gl/mapbox";
 import { ROUTES } from "../../services/mockShuttleData";
 import {
-  getETAsForBus,
+  getNextStop,
   getClosestBusToStop,
   getBusPosition,
 } from "../../utils/calculateETA";
-import type { Bus, SelectionType } from "../../types/shuttle";
+import type { Bus, SelectionType, StopCrowds } from "../../types/shuttle";
 
 interface Props {
   selection: SelectionType;
   buses: Bus[];
+  crowds: StopCrowds;
   onClose: () => void;
 }
 
-export default function InfoPopup({ selection, buses, onClose }: Props) {
+// People count → color: green (low) → yellow → red (high)
+function crowdColor(count: number): string {
+  if (count <= 8) return "#16a34a"; // green
+  if (count <= 16) return "#d97706"; // amber
+  return "#dc2626"; // red
+}
+
+function crowdLabel(count: number): string {
+  if (count <= 8) return "Light";
+  if (count <= 16) return "Moderate";
+  return "Busy";
+}
+
+function CrowdBar({ count }: { count: number }) {
+  const pct = Math.round((count / 25) * 100);
+  const color = crowdColor(count);
+  return (
+    <div>
+      <div
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: 4,
+        }}
+      >
+        <span style={{ fontSize: 12, color: "#64748b" }}>
+          👥 {count} waiting
+        </span>
+        <span
+          style={{
+            fontSize: 11,
+            fontWeight: 700,
+            color,
+            padding: "1px 6px",
+            backgroundColor: color + "18",
+            borderRadius: 4,
+          }}
+        >
+          {crowdLabel(count)}
+        </span>
+      </div>
+      <div
+        style={{
+          width: "100%",
+          height: 6,
+          backgroundColor: "#f1f5f9",
+          borderRadius: 999,
+          overflow: "hidden",
+        }}
+      >
+        <div
+          style={{
+            width: `${pct}%`,
+            height: "100%",
+            backgroundColor: color,
+            borderRadius: 999,
+            transition: "width 0.3s ease",
+          }}
+        />
+      </div>
+    </div>
+  );
+}
+
+function Divider() {
+  return (
+    <div style={{ height: 1, backgroundColor: "#f1f5f9", margin: "10px 0" }} />
+  );
+}
+
+function Label({ text }: { text: string }) {
+  return (
+    <div
+      style={{
+        fontSize: 10,
+        fontWeight: 700,
+        letterSpacing: "0.08em",
+        color: "#94a3b8",
+        marginBottom: 4,
+        textTransform: "uppercase",
+      }}
+    >
+      {text}
+    </div>
+  );
+}
+
+export default function InfoPopup({
+  selection,
+  buses,
+  crowds,
+  onClose,
+}: Props) {
   if (!selection) return null;
 
   const isBus = selection.type === "bus";
@@ -21,157 +115,221 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
 
   let lng: number, lat: number, content: React.ReactNode;
 
+  // ── BUS CLICKED ──────────────────────────────────────────────────
   if (isBus) {
-    [lng, lat] = getBusPosition(selection.data);
-    const route = ROUTES[selection.data.routeId];
-    const etas = getETAsForBus(selection.data);
-    const isDwelling = selection.data.dwellRemaining > 0;
+    const bus = selection.data;
+    [lng, lat] = getBusPosition(bus);
+    const route = ROUTES[bus.routeId];
+    const next = getNextStop(bus);
+    const isDwelling = bus.dwellRemaining > 0;
 
     content = (
-      <div style={{ minWidth: 220 }}>
+      <div>
+        {/* Route colour bar at top */}
         <div
           style={{
-            display: "flex",
+            height: 4,
+            backgroundColor: route.color,
+            borderRadius: "8px 8px 0 0",
+            margin: "-12px -12px 12px -12px",
+          }}
+        />
+
+        <Label text="Bus" />
+        <div
+          style={{
+            fontSize: 15,
+            fontWeight: 700,
+            color: "#1e293b",
+            marginBottom: 2,
+          }}
+        >
+          {bus.name}
+        </div>
+
+        <div
+          style={{
+            display: "inline-flex",
             alignItems: "center",
-            gap: 8,
-            marginBottom: 6,
+            gap: 6,
+            fontSize: 12,
+            color: route.color,
+            fontWeight: 600,
+            backgroundColor: route.color + "15",
+            padding: "3px 8px",
+            borderRadius: 99,
+            marginBottom: 12,
           }}
         >
           <div
             style={{
-              width: 10,
-              height: 10,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
               backgroundColor: route.color,
-              flexShrink: 0,
             }}
           />
-          <span style={{ fontWeight: 700, fontSize: 14, color: "#1e293b" }}>
-            {selection.data.name}
-          </span>
+          {route.name}
         </div>
 
-        <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>
-          {route.name}
-          {isDwelling && (
+        <Divider />
+
+        <Label text="Next Stop" />
+        {next ? (
+          <div
+            style={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+            }}
+          >
+            <span style={{ fontSize: 14, color: "#334155", fontWeight: 500 }}>
+              📍 {next.stop.name}
+            </span>
             <span
               style={{
-                marginLeft: 8,
-                padding: "1px 6px",
-                backgroundColor: "#FEF3C7",
-                color: "#92400E",
-                borderRadius: 4,
-                fontSize: 11,
-                fontWeight: 600,
-              }}
-            >
-              AT STOP
-            </span>
-          )}
-        </div>
-
-        {etas.length === 0 ? (
-          <p style={{ fontSize: 12, color: "#94a3b8" }}>Completing loop...</p>
-        ) : (
-          <>
-            <p
-              style={{
-                fontSize: 11,
+                fontSize: 13,
                 fontWeight: 700,
-                color: "#94a3b8",
-                letterSpacing: "0.05em",
-                marginBottom: 6,
+                color: "white",
+                backgroundColor: route.color,
+                padding: "2px 8px",
+                borderRadius: 99,
+                marginLeft: 8,
+                flexShrink: 0,
               }}
             >
-              UPCOMING STOPS
-            </p>
-            {etas.map(({ stop, etaMinutes }) => (
-              <div
-                key={stop.id}
-                style={{
-                  display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                  gap: 12,
-                  padding: "5px 0",
-                  borderBottom: "1px solid #f1f5f9",
-                  fontSize: 13,
-                }}
-              >
-                <span style={{ color: "#334155" }}>📍 {stop.name}</span>
-                <span
-                  style={{ color: route.color, fontWeight: 700, flexShrink: 0 }}
-                >
-                  {etaMinutes} min
-                </span>
-              </div>
-            ))}
-          </>
+              {next.etaMinutes} min
+            </span>
+          </div>
+        ) : (
+          <span style={{ fontSize: 13, color: "#94a3b8" }}>
+            Completing loop…
+          </span>
+        )}
+
+        {isDwelling && (
+          <div
+            style={{
+              marginTop: 10,
+              padding: "6px 10px",
+              backgroundColor: "#FEF9C3",
+              borderRadius: 6,
+              fontSize: 12,
+              color: "#854D0E",
+              fontWeight: 600,
+            }}
+          >
+            🛑 Stopped at this stop
+          </div>
         )}
       </div>
     );
   }
 
+  // ── STOP CLICKED ─────────────────────────────────────────────────
   if (isStop) {
-    [lng, lat] = selection.data.coords;
-    const route = ROUTES[selection.data.routeId];
-    const result = getClosestBusToStop(selection.data, buses);
+    const stop = selection.data;
+    const count = crowds[stop.id] ?? 0;
+    [lng, lat] = stop.coords;
+    const route = ROUTES[stop.routeId];
+    const result = getClosestBusToStop(stop, buses);
 
     content = (
-      <div style={{ minWidth: 200 }}>
+      <div>
+        {/* Route colour bar at top */}
         <div
           style={{
-            display: "flex",
+            height: 4,
+            backgroundColor: route.color,
+            borderRadius: "8px 8px 0 0",
+            margin: "-12px -12px 12px -12px",
+          }}
+        />
+
+        <Label text="Stop" />
+        <div
+          style={{
+            fontSize: 15,
+            fontWeight: 700,
+            color: "#1e293b",
+            marginBottom: 2,
+          }}
+        >
+          {stop.name}
+        </div>
+
+        <div
+          style={{
+            display: "inline-flex",
             alignItems: "center",
-            gap: 8,
-            marginBottom: 6,
+            gap: 6,
+            fontSize: 12,
+            color: route.color,
+            fontWeight: 600,
+            backgroundColor: route.color + "15",
+            padding: "3px 8px",
+            borderRadius: 99,
+            marginBottom: 12,
           }}
         >
           <div
             style={{
-              width: 10,
-              height: 10,
+              width: 8,
+              height: 8,
               borderRadius: "50%",
               backgroundColor: route.color,
-              flexShrink: 0,
             }}
           />
-          <span style={{ fontWeight: 700, fontSize: 14, color: "#1e293b" }}>
-            {selection.data.name}
-          </span>
-        </div>
-
-        <div style={{ fontSize: 12, color: "#64748b", marginBottom: 10 }}>
           {route.name}
         </div>
 
+        <Divider />
+
+        <Label text="Next Bus" />
         {result ? (
           <div
             style={{
-              padding: "8px 10px",
-              backgroundColor: "#f8fafc",
-              borderRadius: 8,
-              fontSize: 13,
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              marginBottom: 12,
             }}
           >
-            <div style={{ color: "#475569", marginBottom: 2 }}>Next bus:</div>
-            <div style={{ fontWeight: 700, color: "#1e293b" }}>
-              {result.bus.name}
-            </div>
-            <div style={{ marginTop: 4 }}>
-              Arriving in{" "}
-              <span
-                style={{ color: route.color, fontWeight: 700, fontSize: 15 }}
-              >
-                {result.etaMinutes} min
-              </span>
-            </div>
+            <span style={{ fontSize: 13, color: "#334155" }}>
+              🚌 {result.bus.name}
+            </span>
+            <span
+              style={{
+                fontSize: 13,
+                fontWeight: 700,
+                color: "white",
+                backgroundColor: route.color,
+                padding: "2px 8px",
+                borderRadius: 99,
+                marginLeft: 8,
+                flexShrink: 0,
+              }}
+            >
+              {result.etaMinutes} min
+            </span>
           </div>
         ) : (
-          <p style={{ fontSize: 12, color: "#94a3b8" }}>
-            No buses currently on this route.
-          </p>
+          <span
+            style={{
+              fontSize: 13,
+              color: "#94a3b8",
+              display: "block",
+              marginBottom: 12,
+            }}
+          >
+            No buses on this route
+          </span>
         )}
+
+        <Divider />
+
+        <Label text="Crowd Level" />
+        <CrowdBar count={count} />
       </div>
     );
   }
@@ -186,7 +344,16 @@ export default function InfoPopup({ selection, buses, onClose }: Props) {
       maxWidth="280px"
       style={{ padding: 0 }}
     >
-      {content}
+      <div
+        style={{
+          padding: 12,
+          borderRadius: 8,
+          fontFamily:
+            '-apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif',
+        }}
+      >
+        {content}
+      </div>
     </Popup>
   );
 }

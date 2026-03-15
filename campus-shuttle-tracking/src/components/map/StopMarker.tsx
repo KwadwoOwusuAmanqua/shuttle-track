@@ -17,7 +17,10 @@ export default function StopMarker({ stop, onClick }: Props) {
       anchor="center"
     >
       <div
-        onClick={() => onClick(stop)}
+        onClick={(e) => {
+          e.stopPropagation();
+          onClick(stop);
+        }}
         style={{
           width: 44,
           height: 44,

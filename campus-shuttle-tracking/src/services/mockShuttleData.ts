@@ -468,14 +468,14 @@ export const STOP_PATH_INDICES: Record<string, number> = {
   D2: 29,
 };
 
-export const DWELL_TICKS = 50;
+export const DWELL_TICKS = 70;
 export const TICK_SPEED = 0.000006;
 // Mock buses — each has a routeId, current position index along the path, and speed
 export const MOCK_BUSES: Bus[] = [
   {
     id: "SH-101",
     routeId: "A",
-    name: "Main Gate Loop 1",
+    name: "Commercial 1",
     pathIndex: 0.0,
     speed: TICK_SPEED,
     dwellRemaining: 0,
@@ -483,7 +483,7 @@ export const MOCK_BUSES: Bus[] = [
   {
     id: "SH-102",
     routeId: "A",
-    name: "Main Gate Loop 2",
+    name: "Commercial 2",
     pathIndex: 0.0,
     speed: 1.05 * TICK_SPEED,
     dwellRemaining: 0,
@@ -491,7 +491,7 @@ export const MOCK_BUSES: Bus[] = [
   {
     id: "SH-201",
     routeId: "B",
-    name: "Engineering Circuit 1",
+    name: "Brunei Express 1",
     pathIndex: 0.0,
     speed: TICK_SPEED,
     dwellRemaining: 0,
@@ -499,7 +499,7 @@ export const MOCK_BUSES: Bus[] = [
   {
     id: "SH-301",
     routeId: "C",
-    name: "Halls Express 1",
+    name: "Wilkado Express 1",
     pathIndex: 0.0,
     speed: TICK_SPEED,
     dwellRemaining: 0,
@@ -507,7 +507,7 @@ export const MOCK_BUSES: Bus[] = [
   {
     id: "SH-302",
     routeId: "C",
-    name: "Halls Express 2",
+    name: "Wilkado Express 2",
     pathIndex: 0.0,
     speed: TICK_SPEED * 1.1,
     dwellRemaining: 0,
@@ -515,7 +515,7 @@ export const MOCK_BUSES: Bus[] = [
   {
     id: "SH-401",
     routeId: "D",
-    name: "Hospital Connector 1",
+    name: "Medical Village Express",
     pathIndex: 0.0,
     speed: TICK_SPEED,
     dwellRemaining: 0,
@@ -524,4 +524,4 @@ export const MOCK_BUSES: Bus[] = [
 
 // Average shuttle speed on KNUST roads: ~20 km/h → ~333 m/min (will implement a better algortihm later that accounts for stop dwell time, traffic, etc.)
 // But for now 1 degree lat/lng ≈ 111km, so per-degree speed ≈ 0.003 deg/s at 20km/h
-export const AVG_SPEED_DEG_PER_SEC = 0.003;
+export const AVG_SPEED_DEG_PER_SEC = TICK_SPEED * 6;

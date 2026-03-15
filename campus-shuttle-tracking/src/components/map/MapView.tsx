@@ -1,32 +1,43 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Map from "react-map-gl/mapbox";
-
+import RouteFilter from "./RouteFilter";
 import RouteLayer from "./RouteLayer";
 import BusMarker from "./BusMarker";
 import StopMarker from "./StopMarker";
 import InfoPopup from "./InfoPopup";
-import type { Bus, SelectionType, Stop } from "../../types/shuttle";
+import type { Bus, SelectionType, Stop, StopCrowds } from "../../types/shuttle";
 
 import {
   STOPS,
   MOCK_BUSES,
-  ROUTE_PATHS,
-  STOP_PATH_INDICES,
   DWELL_TICKS,
+  STOP_PATH_INDICES,
 } from "../../services/mockShuttleData";
 import RouteLegend from "./RouteLegend";
 import { getRouteLength, getStopDistance } from "../../utils/calculateETA";
+import {
+  initCrowds,
+  tickCrowds,
+  getDwellingStopIds,
+} from "../../utils/crowdSim";
 
 const KNUST_CENTER = { longitude: -1.575, latitude: 6.677, zoom: 15 };
 
 //radius for the bus to be around the stop for it to trigger the dwelling function
-const DWELL_TRIGGER_RADIUS = 0.6;
 
 export default function MapView() {
   const [buses, setBuses] = useState<Bus[]>(
     MOCK_BUSES.map((b) => ({ ...b })), // clone so we can mutate pathIndex
   );
-  const [selection, setSelection] = useState<SelectionType | null>(null); // { type: 'bus'|'stop', data }
+  const [selection, setSelection] = useState<SelectionType | null>(null);
+  const [crowds, setCrowds] = useState<StopCrowds>(initCrowds);
+  const [activeRoute, setActiveRoute] = useState<string | null>(null);
+
+  //use a ref to track latest bus states inside the crowd simulation interval without needing to add buses as a dependency
+  const busesRef = useRef(buses);
+  useEffect(() => {
+    busesRef.current = buses;
+  }, [buses]);
 
   useEffect(() => {
     setBuses((prev) =>
@@ -55,17 +66,15 @@ export default function MapView() {
           const total = getRouteLength(bus.routeId);
           const next = (bus.pathIndex + bus.speed) % total;
 
-          //if route is complete, loop back to start
-          // if (next >= total) {
-          //   next = 0; // Loop back to the beginning
-          // }
-
           // check if the bus has just crossed a stop index so that you can trigger dwell
           const routeStops = STOPS.filter((s) => s.routeId === bus.routeId);
           for (const stop of routeStops) {
             const stopDist = getStopDistance(stop.id, bus.routeId);
-            const crossed =
-              bus.pathIndex % total < stopDist && next >= stopDist;
+            const currentPos = bus.pathIndex % total;
+            const didNotWrap = next > currentPos;
+            const crossed = didNotWrap
+              ? currentPos < stopDist && stopDist <= next
+              : currentPos < stopDist || stopDist <= next; // account for wraparound
 
             if (crossed) {
               return {
@@ -84,10 +93,30 @@ export default function MapView() {
     return () => clearInterval(interval);
   }, []);
 
+  //Crowd Simulation — update crowds every 3 seconds based on bus dwell and random arrivals/departures
+  useEffect(() => {
+    const interval = setInterval(() => {
+      const dwellingIds = getDwellingStopIds(
+        busesRef.current,
+        STOP_PATH_INDICES,
+      );
+      setCrowds((prev) => tickCrowds(prev, dwellingIds));
+    }, 3000);
+    return () => clearInterval(interval);
+  }, []);
+
   const handleBusClick = (bus: Bus) => setSelection({ type: "bus", data: bus });
   const handleStopClick = (stop: Stop) =>
     setSelection({ type: "stop", data: stop });
   const handleClose = () => setSelection(null);
+
+  //Filter buses and stops by clicking active route
+  const visibleBuses = activeRoute
+    ? buses.filter((b) => b.routeId === activeRoute)
+    : buses;
+  const visibleStops = activeRoute
+    ? STOPS.filter((s) => s.routeId === activeRoute)
+    : STOPS;
 
   return (
     <div style={{ position: "relative", width: "100%", height: "100%" }}>
@@ -96,24 +125,33 @@ export default function MapView() {
         initialViewState={KNUST_CENTER}
         style={{ width: "100%", height: "100%" }}
         mapStyle="mapbox://styles/mapbox/streets-v12"
+        onClick={handleClose}
       >
         {/* Color-coded route lines */}
-        <RouteLayer />
+        <RouteLayer activeRoute={activeRoute} />
 
         {/* Stop pins */}
-        {STOPS.map((stop) => (
+        {visibleStops.map((stop) => (
           <StopMarker key={stop.id} stop={stop} onClick={handleStopClick} />
         ))}
 
         {/* Animated bus markers */}
-        {buses.map((bus) => (
+        {visibleBuses.map((bus) => (
           <BusMarker key={bus.id} bus={bus} onClick={handleBusClick} />
         ))}
 
         {/* Click popup — bus or stop */}
-        <InfoPopup selection={selection} buses={buses} onClose={handleClose} />
+        {selection && (
+          <InfoPopup
+            selection={selection}
+            buses={buses}
+            crowds={crowds}
+            onClose={() => setSelection(null)}
+          />
+        )}
       </Map>
-      <RouteLegend />
+      <RouteFilter activeRoute={activeRoute} onSelect={setActiveRoute} />
+      <RouteLegend activeRoute={activeRoute} />
     </div>
   );
 }
