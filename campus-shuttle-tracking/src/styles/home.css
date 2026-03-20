@@ -1,0 +1,355 @@
+.home-page {
+  width: 100%;
+  background: #b2b6bb;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  box-shadow: 0 28px 72px rgba(0, 0, 0, 0.18);
+  padding: 1vh 1vw;
+  height: 100dvh;
+}
+
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px 20px 17px;
+  background: #f4f5f8;
+  flex-shrink: 0;
+  border-radius: 10px;
+}
+
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
+.brandIcon {
+  width: 36px;
+  height: 36px;
+  background: #2b35af;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.brandName {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1a1a2e;
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.bellBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: #1a1a2e;
+  padding: 4px;
+  display: flex;
+  align-items: center;
+}
+
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1vh 1vw;
+  scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+
+.hero {
+  position: relative;
+  border-radius: 18px;
+  overflow: hidden;
+  margin-bottom: 24px;
+  min-height: 170px;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, #1e2a9b 0%, #2b35af 40%, #3b46c0 100%);
+}
+
+
+.heroBg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.08) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  padding: 26px 22px 24px;
+}
+
+.heroHeading {
+  font-size: 22px;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 8px;
+  line-height: 1.25;
+  max-width: 220px;
+  letter-spacing: -0.01em;
+}
+
+.heroSub {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.75);
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+.heroBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: #ffffff;
+  color: #2b35af;
+  border: none;
+  border-radius: 8px;
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: opacity 0.15s;
+}
+
+.heroBtn:hover {
+  opacity: 0.9;
+}
+
+
+
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1a1a2e;
+  margin: 0 0 12px 12px;
+  line-height: 1.3;
+}
+
+.viewAll {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: #2b35af;
+  padding: 0;
+  margin: 2px 12px 0 0;
+  white-space: nowrap;
+}
+
+
+
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.featureRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: #ffffff;
+  border: none;
+  border-radius: 14px;
+  padding: 14px 16px;
+  cursor: pointer;
+  text-align: left;
+  transition: box-shadow 0.15s, transform 0.12s;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.05);
+}
+
+.featureRow:hover {
+  box-shadow: 0 4px 16px rgba(43, 53, 175, 0.12);
+  transform: translateY(-1px);
+}
+
+.featureIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: 12px;
+  background: #eef0fb;
+  color: #2b35af;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.featureText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.featureTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.featureSub {
+  font-size: 12px;
+  color: #7a7f9a;
+}
+
+.featureChevron {
+  color: #b0b4c8;
+  flex-shrink: 0;
+}
+
+
+.activityCard {
+  background: #ffffff;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 1px 6px rgba(0, 0, 0, 0.06);
+}
+
+.activityHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 12px;
+}
+
+.activityBusIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: 10px;
+  background: #eef0fb;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activityInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.activityRoute {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.activityLocation {
+  font-size: 11.5px;
+  color: #7a7f9a;
+}
+
+.onTimeBadge {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: #16a34a;
+  background: #dcfce7;
+  border-radius: 6px;
+  padding: 3px 8px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+
+.mapPlaceholder {
+  width: 100%;
+  height: 110px;
+  background: linear-gradient(180deg, #d6d8e0 0%, #c8cad4 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.mapPlaceholder::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(255, 255, 255, 0.3),
+    transparent
+  );
+  animation: shimmer 1.8s infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    left: -60%;
+  }
+  100% {
+    left: 120%;
+  }
+}
+
+.activityFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 12px;
+}
+
+.footerStat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: #1a1a2e;
+}
+
+.footerLabel {
+  font-weight: 400;
+  color: #7a7f9a;
+}
+
+.footerTime {
+  font-size: 12px;
+  color: #7a7f9a;
+}
+
+.bottomPad {
+  height: 16px;
+}

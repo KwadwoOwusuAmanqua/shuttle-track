@@ -1,0 +1,63 @@
+.wrapper {
+  padding: 1vh 1vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 14px;
+}
+
+.sk {
+  background: #757c88;
+  border-radius: 8px;
+  position: relative;
+  overflow: hidden;
+}
+
+.sk::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    90deg,
+    transparent 0%,
+    rgba(144, 143, 143, 0.65) 50%,
+    transparent 100%
+  );
+  background-size: 200% 100%;
+  animation: shimmer 1.5s ease-in-out infinite;
+}
+
+@keyframes shimmer {
+  0%   { background-position: -200% 0; }
+  100% { background-position:  200% 0; }
+}
+
+/* ── Shapes ── */
+.header {
+  width: 100%;
+  height: 10vh;
+  border-radius: 6px;
+}
+
+.banner {
+  width: 100%;
+  height: 15vh;
+  border-radius: 16px;
+}
+
+.line {
+  width: 100%;
+  height: 10vh;
+  border-radius: 4px;
+}
+
+.short {
+  width: 100%;
+}
+
+.card {
+  width: 100%;
+  height: 40vh;
+  border-radius: 14px;
+}

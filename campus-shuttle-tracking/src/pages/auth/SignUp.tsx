@@ -2,11 +2,13 @@ import { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
 import { signUp } from "../../services/auth";
 import { useAuth } from "../../hooks/react-hook";
+import { Eye,EyeOff } from "lucide-react";
 
 export default function SignUpPage() {
   const [displayName, setDisplayName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [hidePassword,setHidePassword] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const { setUser } = useAuth();
@@ -41,8 +43,11 @@ export default function SignUpPage() {
         <form onSubmit={handleSubmit} className="auth-form">
           <h2>Create Account</h2>
           {error && <p className="auth-error">{error}</p>}
-          <div className="auth-field">
+
+
+          <div>
             <label htmlFor="name">Full Name</label>
+            <div className="auth-field">
             <input
               id="name"
               type="text"
@@ -52,8 +57,11 @@ export default function SignUpPage() {
               required
             />
           </div>
-          <div className="auth-field">
+          </div>
+          
+          <div>
             <label htmlFor="email">Email</label>
+            <div className="auth-field">
             <input
               id="email"
               type="email"
@@ -63,24 +71,35 @@ export default function SignUpPage() {
               required
             />
           </div>
-          <div className="auth-field">
+          </div>
+
+          <div>
             <label htmlFor="password">Password</label>
+            <div className="auth-field">
             <input
               id="password"
-              type="password"
+              type={hidePassword?"password":"text"}
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               placeholder="Min. 6 characters"
               minLength={6}
               required
             />
+            <>
+              {hidePassword?(<EyeOff className="password-btn" onClick={()=>setHidePassword(!hidePassword)} />):
+              <Eye className="password-btn" onClick={()=>setHidePassword(!hidePassword)}/>
+              }
+            </>
           </div>
+          </div>
+
           <button type="submit" className="auth-btn" disabled={submitting}>
             {submitting ? "Creating account..." : "Sign Up"}
           </button>
           <p className="auth-switch">
             Already have an account? <Link to="/login">Sign In</Link>
           </p>
+
         </form>
       </div>
     </div>

@@ -2,7 +2,7 @@ import { BrowserRouter, Route, Routes, Navigate } from "react-router-dom";
 import { useAuth } from "../hooks/react-hook";
 
 import StudentLayout from "../layouts/StudentLayout";
-import AdminLayout from "../pages/admin/admin-page";
+import AdminLayout from "../layouts/AdminLayout";
 import MapPage from "../pages/student/Map";
 import LoginPage from "../pages/auth/Login";
 import SignUpPage from "../pages/auth/SignUp";
@@ -11,12 +11,15 @@ import BusesPage from "../pages/admin/BusesPage";
 import StopsPage from "../pages/admin/StopsPage";
 import AdminMapPage from "../pages/admin/AdminMapPage";
 import ProtectedRoute from "../components/common/ProtectedRoute";
+import HomePage from "../pages/HomePage";
+import StudentRoutePage from '../pages/student/StudentRoutePage'
+
 
 function RootRedirect() {
   const { user, loading } = useAuth();
   if (loading) return null;
   if (!user) return <Navigate to="/login" replace />;
-  return <Navigate to={user.role === "admin" ? "/admin" : "/map"} replace />;
+  return <Navigate to={user.role === "admin" ? "/admin" : "/home"} replace />;
 }
 
 export default function AppRouter() {
@@ -31,6 +34,8 @@ export default function AppRouter() {
         <Route element={<ProtectedRoute />}>
           <Route element={<StudentLayout />}>
             <Route path="/map" element={<MapPage />} />
+            <Route path="/home" element={<HomePage />} />
+            <Route path="/studentroutes" element={<StudentRoutePage/>} />
           </Route>
         </Route>
 

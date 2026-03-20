@@ -43,6 +43,7 @@ export default function RouteFilter({ activeRoute, onSelect }: Props) {
 
       {Object.values(ROUTES).map((route) => {
         const isSelected = activeRoute === route.id;
+
         return (
           <button
             key={route.id}

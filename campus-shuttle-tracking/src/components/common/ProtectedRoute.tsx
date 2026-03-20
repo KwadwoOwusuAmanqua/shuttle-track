@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useAuth } from "../../hooks/react-hook";
+import styles from "../../styles/loading.module.css"
 
 interface Props {
   allowedRole?: "student" | "admin";
@@ -14,18 +15,13 @@ export default function ProtectedRoute({
 
   if (loading) {
     return (
-      <div
-        style={{
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
-          height: "100vh",
-          fontSize: 16,
-          color: "#666",
-        }}
-      >
-        Loading...
-      </div>
+       <div className={styles.wrapper}>
+      <div className={`${styles.sk} ${styles.header}`} />
+      <div className={`${styles.sk} ${styles.banner}`} />
+      <div className={`${styles.sk} ${styles.line}`} />
+      <div className={`${styles.sk} ${styles.line} ${styles.short}`} />
+      <div className={`${styles.sk} ${styles.card}`} />
+    </div>
     );
   }
 
@@ -33,9 +29,9 @@ export default function ProtectedRoute({
 
   if (allowedRole && user.role !== allowedRole) {
     return (
-      <Navigate to={user.role === "admin" ? "/admin" : "/map"} replace />
+      <Navigate to={user.role === "admin" ? "/admin" : "/home"} replace />
     );
   }
 
-  return <Outlet />;
+  return (<Outlet />);
 }
