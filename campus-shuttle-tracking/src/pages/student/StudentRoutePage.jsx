@@ -1,12 +1,14 @@
 import { useState } from "react";
 import { GitBranch, Search, ChevronUp, Clock, ArrowRight } from "lucide-react";
-import styles from '../../styles/StudentRoutesPage.module.css';
 import { ROUTES, STOPS, MOCK_BUSES  } from "../../services/mockShuttleData";
 import { useNavigate } from "react-router-dom";
 import { getClosestBusToStop } from "../../utils/calculateETA";
 import { getNextActiveStopId } from "../../utils/getNextActiveStopId";
 import MiniMap from "../../components/map/MiniMap";
 import { useShuttleBuses } from "../../hooks/useShuttleBuses";
+import { useAuth } from "../../hooks/react-hook";
+import styles from '../../styles/StudentRoutesPage.module.css';
+
 
 
 
@@ -23,6 +25,9 @@ export default function StudentRoutePage() {
 
   const navigate=useNavigate();
   const buses=useShuttleBuses()
+
+  const { user } = useAuth();
+  const initial = user?.displayName?.[0]?.toUpperCase() ?? "?";
 
   const [routes, setRoutes] = useState(
       routesWithStops.map((r, i) => ({ ...r, expanded: i === 0 }))); 
@@ -47,7 +52,7 @@ export default function StudentRoutePage() {
 
   return (
     <div className={styles.page}>
-      {/* ── Top bar ── */}
+
       <header className={styles.topbar}>
         <button className={styles.iconBtn}>
           <GitBranch size={22} strokeWidth={2} />
@@ -55,14 +60,13 @@ export default function StudentRoutePage() {
         <h1 className={styles.pageTitle}>Campus Routes</h1>
         <button className={styles.avatarBtn}>
           <span className={styles.avatarInner}>
-            {/* profile name */} PN
+            {initial}
           </span>
         </button>
       </header>
 
       <div className={styles.scroll}>
 
-      {/* ── Search ── */}
       <div className={styles.searchWrap}>
         <Search size={16} className={styles.searchIcon} strokeWidth={2} />
         <input
@@ -73,13 +77,11 @@ export default function StudentRoutePage() {
         />
       </div>
 
-      {/* ── Map placeholder ── */}
       <div className={styles.mapBox} onClick={() => navigate("/map")} >
         <MiniMap/>
         <span className={styles.liveBadge}>LIVE</span>
       </div>
 
-      {/* ── Route list ── */}
       <div className={styles.routeList}>
 
         {filtered.map((route) => (
@@ -90,7 +92,6 @@ export default function StudentRoutePage() {
               onClick={() => toggle(route.id)}>
                 
               <div className={styles.cardHeaderLeft}>
-                {/* colour dot / bus icon */}
                 {route.expanded ? (
                   <span
                     className={styles.routeDot}
@@ -121,7 +122,6 @@ export default function StudentRoutePage() {
               </div>
             </button>
 
-            {/* Expanded stop list */}
             {route.expanded && (
             <>
             <div className={styles.stopList}>
@@ -147,6 +147,7 @@ export default function StudentRoutePage() {
                 ));
               })()}
             </div>
+            
             <button
                   className={styles.detailBtn}
                   style={{ background: route.color }}
@@ -155,8 +156,7 @@ export default function StudentRoutePage() {
                   View Detailed Route
                   <ArrowRight size={16} strokeWidth={2.5} />
                 </button>
-            </>
-)}
+            </>)}
 
             {/* Collapsed next shuttle */}
             {!route.expanded && (

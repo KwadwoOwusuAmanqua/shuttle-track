@@ -1,6 +1,6 @@
 import '../styles/sudentLayout.css';
 import { useNavigate, useLocation, Outlet } from "react-router-dom";
-import { Home, Map, Share2, Settings } from "lucide-react";
+import { Home, Map, Share2, User } from "lucide-react";
 
 
 
@@ -9,7 +9,7 @@ const TABS = [
   { path: "/home",   icon: <Home size={22} />,    label: "Home" },
   { path: "/map",    icon: <Map size={22} />,     label: "Map" },
   { path: "/studentroutes", icon: <Share2 size={22} />,  label: "Routes" },
-  { path: "/settings", icon: <Settings size={22} />, label: "Settings" },
+  { path: "/profile", icon: <User size={22} />, label: "Profile" },
 ];
 
 export default function StudentLayout() {

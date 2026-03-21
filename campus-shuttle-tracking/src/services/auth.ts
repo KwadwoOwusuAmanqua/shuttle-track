@@ -1,9 +1,7 @@
 import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signOut as firebaseSignOut,
-  onAuthStateChanged,
-  type User,
+  createUserWithEmailAndPassword,signInWithEmailAndPassword,
+  signOut as firebaseSignOut,onAuthStateChanged, type User,
+  reauthenticateWithCredential, updatePassword, EmailAuthProvider,
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
@@ -39,9 +37,20 @@ export async function signOut(): Promise<void> {
   await firebaseSignOut(auth);
 }
 
+export async function changePassword(currentPassword, newPassword) {
+  const user = auth.currentUser;
+  const credential = EmailAuthProvider.credential(user.email, currentPassword);
+  await reauthenticateWithCredential(user, credential);
+  await updatePassword(user, newPassword);
+}
+
 export async function fetchUserProfile(user: User): Promise<UserProfile | null> {
   const snap = await getDoc(doc(db, "users", user.uid));
   return snap.exists() ? (snap.data() as UserProfile) : null;
+}
+
+export async function updateUserProfile(uid, updates) {
+  await setDoc(doc(db, "users", uid), updates, { merge: true });
 }
 
 export { onAuthStateChanged, auth };

@@ -1,16 +1,22 @@
 import { useState, useEffect } from "react";
-import { Bell, MapPin, Navigation, Clock, ChevronRight, Users, CalendarCheck, X, ChevronLeft } from "lucide-react";
+import { MapPin, Navigation, Clock, ChevronRight, Users, CalendarCheck, X, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES, STOPS } from "../services/mockShuttleData";
 import { getClosestBusToStop } from "../utils/calculateETA";
-import '../styles/home.css';
+import { useAuth } from "../hooks/react-hook";
 import { useShuttleBuses } from "../hooks/useShuttleBuses";
+import { useRecentActivity } from "../hooks/useRecentActivity";
+import '../styles/home.css';
 
 
 const HomePage = () => {
 
   const navigate = useNavigate();
   const buses= useShuttleBuses();
+  const recentActivity = useRecentActivity(buses);
+
+  const { user } = useAuth();
+  const initial = user?.displayName?.[0]?.toUpperCase() ?? "?"; 
  
   const [sheetOpen, setSheetOpen] = useState(false);
   const [selectedRouteId, setSelectedRouteId] = useState(null);
@@ -29,6 +35,8 @@ const HomePage = () => {
     ? STOPS.filter((s) => s.routeId === selectedRouteId).sort((a, b) => a.order - b.order)
     : [];
 
+
+
   return (
     <div className="home-page">
       {/* ── Top bar ── */}
@@ -41,7 +49,7 @@ const HomePage = () => {
         </div>
         <button className="avatarBtn" aria-label="Notifications">
           <span className="avatarInner">
-          {/* profile name */}PN
+          {initial}
           </span>
         </button>
       </header>
@@ -98,35 +106,35 @@ const HomePage = () => {
         <section className="section">
           <div className="sectionHeader">
             <h3 className="sectionTitle">Recent Shuttle Activity</h3>
-            <button className="viewAll">View All</button>
+            <button className="viewAll" onClick={() => navigate("/studentroutes")}>
+            View All
+            </button>
           </div>
-          <div className="activityCard">
+
+          {recentActivity.length === 0 ? (
+          <div className="activityEmpty">
+            No shuttles currently at a stop
+          </div>
+          ) : (
+          recentActivity.map(({ bus, stop, route }) => (
+          <div key={bus.id} className="activityCard">
             <div className="activityHeader">
-              <div className="activityBusIcon">
-                <Navigation size={14} color="#2b35af" strokeWidth={2.5} />
-              </div>
-              <div className="activityInfo">
-                <span className="activityRoute">Blue Line • Bus #24</span>
-                <span className="activityLocation">Arrived at Main Quad</span>
-              </div>
-              <span className="onTimeBadge">ON TIME</span>
+            <div className="activityBusIcon" style={{ background: route.color + "18" }}>
+              <Navigation size={14} color={route.color} strokeWidth={2.5} />
             </div>
-            <div className="mapPlaceholder" />
-            <div className="activityFooter">
-              <span className="footerStat">
-                <Users size={13} strokeWidth={2} />
-                12
-                <span className="footerLabel">Passengers</span>
-              </span>
-              <span className="footerTime">2 mins ago</span>
+            <div className="activityInfo">
+              <span className="activityRoute">{route.name} • {bus.name}</span>
+              <span className="activityLocation">At {stop.name}</span>
             </div>
-          </div>
+              <span className="onTimeBadge">AT STOP</span>
+            </div>
+          </div>))
+          )}
         </section>
 
         <div className="bottomPad" />
       </div>
 
-      {/* ── Backdrop ── */}
       {sheetOpen && <div className="sheetBackdrop" onClick={closeSheet} />}
 
       {/* ── Estimated Arrival bottom sheet ── */}
@@ -176,7 +184,6 @@ const HomePage = () => {
           </div>
         )}
 
-        {/* Step 2 — Stop ETAs */}
         {selectedRouteId && (
           <div className="sheetStopList">
             {routeStops.map((stop) => {

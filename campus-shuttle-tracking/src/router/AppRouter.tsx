@@ -15,6 +15,7 @@ import ProtectedRoute from "../components/common/ProtectedRoute";
 import HomePage from "../pages/HomePage";
 import StudentRoutePage from '../pages/student/StudentRoutePage';
 import SchedulePage from '../pages/common/SchedulePage';
+import StudentProfilePage from "../pages/student/StudentProfilePage";
 
 
 function RootRedirect() {
@@ -40,6 +41,7 @@ export default function AppRouter() {
             <Route path="/studentroutes" element={<StudentRoutePage/>} />
             <Route path="/filteredroute" element={<MapView/>} />
             <Route path="/schedule" element={<SchedulePage />} />
+            <Route path="/profile" element={<StudentProfilePage/>} />
           </Route>
         </Route>
 
