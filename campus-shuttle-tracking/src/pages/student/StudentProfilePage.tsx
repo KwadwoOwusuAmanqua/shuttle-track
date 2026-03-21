@@ -2,13 +2,11 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../hooks/react-hook";
 import { updateUserProfile, signOut, changePassword } from "../../services/auth";
-import {
-  User, Mail, Pencil, Check, X,
-  LogOut, Shield, Lock, Eye, EyeOff,
+import { User, Mail, Pencil, Check, X, LogOut, Shield, Lock, Eye, EyeOff,
 } from "lucide-react";
 import styles from "../../styles/StudentProfilePage.module.css";
 
-/* ── Password field with show/hide toggle ── */
+
 function PasswordInput({ value, onChange, placeholder }) {
   const [show, setShow] = useState(false);
   return (

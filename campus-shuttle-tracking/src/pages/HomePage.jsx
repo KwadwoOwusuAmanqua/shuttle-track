@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
-import { MapPin, Navigation, Clock, ChevronRight, Users, CalendarCheck, X, ChevronLeft } from "lucide-react";
+import { useState } from "react";
+import { MapPin, Navigation, Clock, ChevronRight, CalendarCheck, X, ChevronLeft } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { ROUTES, STOPS } from "../services/mockShuttleData";
 import { getClosestBusToStop } from "../utils/calculateETA";
