@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from "react";
+import { useLocation } from "react-router-dom";
 import Map from "react-map-gl/mapbox";
 import RouteFilter from "./RouteFilter";
 import RouteLayer from "./RouteLayer";
@@ -21,17 +22,21 @@ import {
   getDwellingStopIds,
 } from "../../utils/crowdSim";
 
+
 const KNUST_CENTER = { longitude: -1.575, latitude: 6.677, zoom: 15 };
 
 //radius for the bus to be around the stop for it to trigger the dwelling function
 
 export default function MapView() {
+
+  const { state } = useLocation();
+
   const [buses, setBuses] = useState<Bus[]>(
     MOCK_BUSES.map((b) => ({ ...b })), // clone so we can mutate pathIndex
   );
   const [selection, setSelection] = useState<SelectionType | null>(null);
   const [crowds, setCrowds] = useState<StopCrowds>(initCrowds);
-  const [activeRoute, setActiveRoute] = useState<string | null>(null);
+  const [activeRoute, setActiveRoute] = useState(state?.activeRoute ?? null);
 
   //use a ref to track latest bus states inside the crowd simulation interval without needing to add buses as a dependency
   const busesRef = useRef(buses);

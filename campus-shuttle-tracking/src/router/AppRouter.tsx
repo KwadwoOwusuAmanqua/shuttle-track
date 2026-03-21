@@ -4,6 +4,7 @@ import { useAuth } from "../hooks/react-hook";
 import StudentLayout from "../layouts/StudentLayout";
 import AdminLayout from "../layouts/AdminLayout";
 import MapPage from "../pages/student/Map";
+import MapView from "../components/map/MapView";
 import LoginPage from "../pages/auth/Login";
 import SignUpPage from "../pages/auth/SignUp";
 import RoutesPage from "../pages/admin/RoutesPage";
@@ -12,7 +13,8 @@ import StopsPage from "../pages/admin/StopsPage";
 import AdminMapPage from "../pages/admin/AdminMapPage";
 import ProtectedRoute from "../components/common/ProtectedRoute";
 import HomePage from "../pages/HomePage";
-import StudentRoutePage from '../pages/student/StudentRoutePage'
+import StudentRoutePage from '../pages/student/StudentRoutePage';
+import SchedulePage from '../pages/common/SchedulePage';
 
 
 function RootRedirect() {
@@ -36,6 +38,8 @@ export default function AppRouter() {
             <Route path="/map" element={<MapPage />} />
             <Route path="/home" element={<HomePage />} />
             <Route path="/studentroutes" element={<StudentRoutePage/>} />
+            <Route path="/filteredroute" element={<MapView/>} />
+            <Route path="/schedule" element={<SchedulePage />} />
           </Route>
         </Route>
 

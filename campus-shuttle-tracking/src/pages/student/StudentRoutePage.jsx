@@ -1,49 +1,19 @@
 import { useState } from "react";
-import { GitBranch, Search, ChevronUp, ChevronDown, Clock, ArrowRight } from "lucide-react";
+import { GitBranch, Search, ChevronUp, Clock, ArrowRight } from "lucide-react";
 import styles from '../../styles/StudentRoutesPage.module.css';
-import { ROUTES, STOPS, MOCK_BUSES } from "../../services/mockShuttleData";
+import { ROUTES, STOPS, MOCK_BUSES  } from "../../services/mockShuttleData";
+import { useNavigate } from "react-router-dom";
+import { getClosestBusToStop } from "../../utils/calculateETA";
+import { getNextActiveStopId } from "../../utils/getNextActiveStopId";
+import MiniMap from "../../components/map/MiniMap";
+import { useShuttleBuses } from "../../hooks/useShuttleBuses";
 
 
-// const ROUTES = [
-//   {
-//     id: "north-loop",
-//     name: "North Loop",
-//     stops: 12,
-//     shuttles: 3,
-//     nextShuttle: "2 mins",
-//     color: "#2b35af",
-//     expanded: true,
-//     stopList: [
-//       { name: "Central Library", eta: "2 min" },
-//       { name: "Engineering Hall", eta: "7 min" },
-//       { name: "Student Union", eta: "12 min" },
-//     ],
-//   },
-//   {
-//     id: "south-express",
-//     name: "South Express",
-//     stops: 8,
-//     shuttles: 2,
-//     nextShuttle: "5 mins",
-//     color: "#6c63ff",
-//     expanded: false,
-//     stopList: [],
-//   },
-//   {
-//     id: "west-perimeter",
-//     name: "West Perimeter",
-//     stops: 15,
-//     shuttles: 1,
-//     nextShuttle: "14 mins",
-//     color: "#f59e0b",
-//     expanded: false,
-//     stopList: [],
-//   },
-// ];
 
 const routesWithStops = Object.values(ROUTES).map((route) => ({
   ...route,
-  stopList: STOPS.filter((s) => s.routeId === route.id),
+  stopList: STOPS.filter((s) => s.routeId === route.id)
+                  .sort((a, b) => a.order - b.order),
   bus_stop_num: STOPS.filter((s) => s.routeId === route.id).length,
   shuttles: MOCK_BUSES.filter((s) => s.routeId === route.id).length
 }));
@@ -51,9 +21,14 @@ const routesWithStops = Object.values(ROUTES).map((route) => ({
 
 export default function StudentRoutePage() {
 
+  const navigate=useNavigate();
+  const buses=useShuttleBuses()
+
   const [routes, setRoutes] = useState(
       routesWithStops.map((r, i) => ({ ...r, expanded: i === 0 }))); 
   const [search, setSearch] = useState("");
+  
+
 
   const toggle = (id) =>
     setRoutes((prev) =>
@@ -64,6 +39,12 @@ export default function StudentRoutePage() {
     r.name.toLowerCase().includes(search.toLowerCase())
   );
 
+  const handleRouteSelect = (routeId) => {
+    navigate("/filteredroute", { state: { activeRoute: routeId } });
+  };
+
+
+
   return (
     <div className={styles.page}>
       {/* ── Top bar ── */}
@@ -73,7 +54,9 @@ export default function StudentRoutePage() {
         </button>
         <h1 className={styles.pageTitle}>Campus Routes</h1>
         <button className={styles.avatarBtn}>
-          <span className={styles.avatarInner} />
+          <span className={styles.avatarInner}>
+            {/* profile name */} PN
+          </span>
         </button>
       </header>
 
@@ -91,7 +74,8 @@ export default function StudentRoutePage() {
       </div>
 
       {/* ── Map placeholder ── */}
-      <div className={styles.mapBox}>
+      <div className={styles.mapBox} onClick={() => navigate("/map")} >
+        <MiniMap/>
         <span className={styles.liveBadge}>LIVE</span>
       </div>
 
@@ -139,33 +123,40 @@ export default function StudentRoutePage() {
 
             {/* Expanded stop list */}
             {route.expanded && (
-              <>
-                <div className={styles.stopList}>
-                  {route.stopList.map((stop, i) => (
-                    <div key={i} className={styles.stopRow}>
-                      <div className={styles.stopLine}>
-                        <span
-                          className={`${styles.stopDot} ${i === 0 ? styles.stopDotFilled : ""}`}
+            <>
+            <div className={styles.stopList}>
+              {(() => {
+                const activeStopIds = getNextActiveStopId(route, buses);
+                return route.stopList.map((stop, i) => (
+                  <div key={stop.id} className={styles.stopRow}>
+                    <div className={styles.stopLine}>
+                      <span
+                          className={`${styles.stopDot} ${
+                            activeStopIds.includes(stop.id) ? styles.stopDotFilled : ""
+                          }`}
                         />
-                        {i < route.stopList.length - 1 && (
-                          <span className={styles.stopConnector} />
-                        )}
-                      </div>
-                      <span className={styles.stopName}>{stop.name}</span>
-                      <span className={styles.stopEta}>{stop.eta}</span>
+                      {i < route.stopList.length - 1 && (
+                        <span className={styles.stopConnector} />
+                      )}
                     </div>
-                  ))}
-                </div>
-
-                <button
+                    <span className={styles.stopName}>{stop.name}</span>
+                    <span className={styles.stopEta}>
+                      {getClosestBusToStop(stop, buses.filter(b => b.routeId === route.id))?.etaMinutes ?? "—"} min
+                    </span>
+                  </div>
+                ));
+              })()}
+            </div>
+            <button
                   className={styles.detailBtn}
                   style={{ background: route.color }}
+                  onClick={() => handleRouteSelect(route.id)}
                 >
                   View Detailed Route
                   <ArrowRight size={16} strokeWidth={2.5} />
                 </button>
-              </>
-            )}
+            </>
+)}
 
             {/* Collapsed next shuttle */}
             {!route.expanded && (

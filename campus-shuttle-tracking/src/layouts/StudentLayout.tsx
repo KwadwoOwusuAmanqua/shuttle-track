@@ -4,6 +4,7 @@ import { Home, Map, Share2, Settings } from "lucide-react";
 
 
 
+
 const TABS = [
   { path: "/home",   icon: <Home size={22} />,    label: "Home" },
   { path: "/map",    icon: <Map size={22} />,     label: "Map" },
@@ -14,6 +15,7 @@ const TABS = [
 export default function StudentLayout() {
   const navigate = useNavigate();
   const { pathname } = useLocation();
+
 
   return (
     <div className="page">
