@@ -58,7 +58,7 @@ export default function StudentRoutePage() {
           <GitBranch size={22} strokeWidth={2} />
         </button>
         <h1 className={styles.pageTitle}>Campus Routes</h1>
-        <button className={styles.avatarBtn}>
+        <button className={styles.avatarBtn} onClick={()=>navigate("/profile")}>
           <span className={styles.avatarInner}>
             {initial}
           </span>

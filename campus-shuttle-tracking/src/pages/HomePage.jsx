@@ -47,7 +47,7 @@ const HomePage = () => {
           </span>
           <span className="brandName">Campus Transit</span>
         </div>
-        <button className="avatarBtn" aria-label="Notifications">
+        <button className="avatarBtn" onClick={()=>navigate("/profile")}>
           <span className="avatarInner">
           {initial}
           </span>
