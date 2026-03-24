@@ -1,9 +1,14 @@
 import { NavLink, Outlet, useNavigate } from "react-router-dom";
 import { signOut } from "../services/auth";
+import {ChevronLeft, ChevronRight} from "lucide-react";
+import { useState } from "react";
 import '../styles/admin.css'
 
 export default function AdminLayout() {
+
   const navigate = useNavigate();
+
+  const [hide,setHide]=useState(true)
 
   async function handleSignOut() {
     await signOut();
@@ -11,33 +16,39 @@ export default function AdminLayout() {
   }
 
   return (
-    <div className="admin-layout">
-      <aside className="admin-sidebar">
+  <div className="admin-layout">
+      <aside className={`${hide ? "admin-sidebar-hidden" : "admin-sidebar"}`}>
+        <button className="sidebar-toggle" onClick={() => setHide(h => !h)}>
+          {hide ? <ChevronRight size={16} /> : <ChevronLeft size={16} />}
+        </button>
         <div className="admin-brand">
           <span>🚌</span>
-          <h2>Admin Panel</h2>
+          {!hide && <h2>Admin Panel</h2>}
         </div>
         <nav className="admin-nav">
           <NavLink to="/admin/routes" className={({ isActive }) => isActive ? "admin-link active" : "admin-link"}>
-            🗺️ Routes
+            🗺️ {!hide && "Routes"}
           </NavLink>
           <NavLink to="/admin/buses" className={({ isActive }) => isActive ? "admin-link active" : "admin-link"}>
-            🚌 Buses
+            🚌 {!hide && "Buses"}
           </NavLink>
           <NavLink to="/admin/stops" className={({ isActive }) => isActive ? "admin-link active" : "admin-link"}>
-            📍 Stops
+            📍 {!hide && "Stops"}
           </NavLink>
           <NavLink to="/admin/map" className={({ isActive }) => isActive ? "admin-link active" : "admin-link"}>
-            🗾 Live Map
+            🗾 {!hide && "Live Map"}
           </NavLink>
         </nav>
-        <button className="admin-signout" onClick={handleSignOut}>
-          Sign Out
-        </button>
+        {!hide && (
+          <button className="admin-signout" onClick={handleSignOut}>
+            Sign Out
+          </button>
+        )}
       </aside>
-      <main className="admin-content">
-        <Outlet />
-      </main>
-    </div>
+
+    <main className="admin-content">
+      <Outlet />
+    </main>
+  </div>
   );
 }

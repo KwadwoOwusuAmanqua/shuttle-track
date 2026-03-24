@@ -9,10 +9,11 @@ import { useRecentActivity } from "../hooks/useRecentActivity";
 import '../styles/home.css';
 
 
+
 const HomePage = () => {
 
   const navigate = useNavigate();
-  const buses= useShuttleBuses();
+  const buses = useShuttleBuses();
   const recentActivity = useRecentActivity(buses);
 
   const { user } = useAuth();
@@ -34,7 +35,6 @@ const HomePage = () => {
   const routeStops = selectedRouteId
     ? STOPS.filter((s) => s.routeId === selectedRouteId).sort((a, b) => a.order - b.order)
     : [];
-
 
 
   return (

@@ -9,6 +9,7 @@ interface Props {
 }
 
 export default function BusMarker({ bus, onClick }: Props) {
+  
   const [lng, lat] = getBusPosition(bus);
   const route = ROUTES[bus.routeId];
   const isDwelling = bus.dwellRemaining > 0;

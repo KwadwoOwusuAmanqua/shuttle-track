@@ -2,7 +2,7 @@ import MapView from "../map/MapView";
 
 export default function AdminMapView() {
   return (
-    <div style={{ width: "100%", height: "100%" }}>
+    <div style={{ display:"flex", width:"100vw", height:"100dvh", overflowY:"auto" }}>
       <MapView />
     </div>
   );

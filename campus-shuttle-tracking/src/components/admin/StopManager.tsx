@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   collection,
   onSnapshot,
@@ -21,6 +21,7 @@ export default function StopManager() {
   });
   const [editId, setEditId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const targetRef= useRef();
 
   useEffect(() => {
     const unsubStops = onSnapshot(collection(db, "stops"), (snap) => {
@@ -44,6 +45,15 @@ export default function StopManager() {
       coords: stop.coords,
       order: stop.order,
     });
+
+    setTimeout(() => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start' // Ensure it scrolls to the top of the header
+      });
+    }
+  }, 0);
   }
 
   function cancelEdit() {
@@ -76,7 +86,7 @@ export default function StopManager() {
       <h2>Stops</h2>
 
       <div className="manager-form">
-        <h3>{editId ? "Edit Stop" : "Add Stop"}</h3>
+        <h3 ref={targetRef}>{editId ? "Edit Stop" : "Add Stop"}</h3>
         <div className="form-row">
           <input
             type="text"

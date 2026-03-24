@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
   collection,
   onSnapshot,
@@ -21,6 +21,8 @@ export default function BusManager() {
   });
   const [editId, setEditId] = useState<string | null>(null);
   const [saving, setSaving] = useState(false);
+  const targetRef = useRef(null);
+
 
   useEffect(() => {
     const unsubBuses = onSnapshot(collection(db, "buses"), (snap) => {
@@ -33,13 +35,24 @@ export default function BusManager() {
   }, []);
 
   function startEdit(bus: Bus) {
+    
     setEditId(bus.id);
+
     setForm({
       routeId: bus.routeId,
       name: bus.name,
       pathIndex: bus.pathIndex,
       speed: bus.speed,
     });
+
+    setTimeout(() => {
+    if (targetRef.current) {
+      targetRef.current.scrollIntoView({ 
+        behavior: 'smooth',
+        block: 'start' // Ensure it scrolls to the top of the header
+      });
+    }
+  }, 0);
   }
 
   function cancelEdit() {
@@ -72,7 +85,7 @@ export default function BusManager() {
       <h2>Buses</h2>
 
       <div className="manager-form">
-        <h3>{editId ? "Edit Bus" : "Add Bus"}</h3>
+        <h3 ref={targetRef}>{editId ? "Edit Bus" : "Add Bus"}</h3>
         <div className="form-row">
           <input
             type="text"
@@ -142,10 +155,8 @@ export default function BusManager() {
                 <button className="btn-edit" onClick={() => startEdit(bus)}>
                   Edit
                 </button>
-                <button
-                  className="btn-delete"
-                  onClick={() => handleDelete(bus.id)}
-                >
+                <button className="btn-delete"
+                  onClick={() => handleDelete(bus.id)}>
                   Delete
                 </button>
               </div>
