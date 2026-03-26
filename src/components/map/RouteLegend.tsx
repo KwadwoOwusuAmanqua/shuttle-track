@@ -1,0 +1,65 @@
+import { ROUTES } from "../../services/mockShuttleData";
+import Colors from "../../theme/colors";
+
+interface Props {
+  activeRoute: string | null;
+}
+export default function RouteLegend({ activeRoute }: Props) {
+  return (
+    <div
+      style={{
+        position: "absolute",
+        bottom: 32,
+        left: 16,
+        backgroundColor: Colors.glass_bg ?? "rgba(26, 28, 31, 0.72)",
+        backdropFilter: "blur(24px)",
+        WebkitBackdropFilter: "blur(24px)",
+        borderRadius: 12,
+        padding: "12px 16px",
+        boxShadow: `0 8px 24px rgba(0,0,0,0.3)`,
+        zIndex: 10,
+        minWidth: 180,
+      }}
+    >
+      <p
+        style={{
+          fontSize: 11,
+          fontWeight: 700,
+          color: Colors.textMuted,
+          marginBottom: 8,
+          letterSpacing: 1,
+        }}
+      >
+        ROUTES
+      </p>
+      {Object.values(ROUTES).map((route) => {
+        const isActive = !activeRoute || activeRoute === route.id;
+        return (
+          <div
+            key={route.id}
+            style={{
+              display: "flex",
+              alignItems: "center",
+              gap: 8,
+              marginBottom: 6,
+              opacity: isActive ? 1 : 0.3,
+              transition: "opacity 0.2s ease",
+            }}
+          >
+            <div
+              style={{
+                width: 24,
+                height: 4,
+                borderRadius: 2,
+                backgroundColor: route.color,
+              }}
+            />
+            <span style={{ fontSize: 13, color: Colors.textPrimary }}>
+              {route.id} — {route.name}
+            </span>
+          </div>
+        );
+      })}
+    </div>
+  );
+}

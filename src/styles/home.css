@@ -1,0 +1,587 @@
+.home-page {
+  width: 100%;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  padding: 1vh 1vw;
+  height: 100dvh;
+}
+
+.topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 17px 20px 17px;
+  background: var(--surface-container-lowest);
+  flex-shrink: 0;
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brandIcon {
+  width: 36px;
+  height: 36px;
+  background: var(--gradient-primary);
+  border-radius: var(--radius-lg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: var(--shadow-glow);
+}
+
+.brandName {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--on-surface);
+  line-height: 1.3;
+  letter-spacing: 0.01em;
+}
+
+.avatarBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: 0;
+  border: none;
+  transition: box-shadow 0.15s;
+}
+
+.avatarBtn:hover {
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.avatarInner {
+  width: 100%;
+  height: 100%;
+  background: var(--surface-container-high);
+  border-radius: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 1vh 1vw;
+  scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* ── Hero Section ── */
+.hero {
+  position: relative;
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  margin-bottom: 24px;
+  min-height: 170px;
+}
+
+.heroBg {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-container) 100%);
+}
+
+.heroBg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image: radial-gradient(
+    circle,
+    rgba(255, 255, 255, 0.10) 1px,
+    transparent 1px
+  );
+  background-size: 20px 20px;
+}
+
+.heroContent {
+  position: relative;
+  z-index: 1;
+  padding: 26px 22px 24px;
+}
+
+.heroHeading {
+  font-size: 22px;
+  font-weight: 800;
+  color: var(--on-primary);
+  margin: 0 0 8px;
+  line-height: 1.25;
+  letter-spacing: -0.04em;
+}
+
+.heroSub {
+  font-size: 12.5px;
+  color: rgba(255, 255, 255, 0.80);
+  margin: 0 0 18px;
+  line-height: 1.5;
+}
+
+.heroBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: var(--surface-container-lowest);
+  color: var(--primary);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 10px 18px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  letter-spacing: 0.02em;
+  transition: box-shadow 0.15s;
+  box-shadow: var(--shadow-sm);
+}
+
+.heroBtn:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* ── Sections ── */
+.section {
+  margin-bottom: 24px;
+}
+
+.sectionHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+
+.sectionTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 16px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+}
+
+.viewAll {
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--primary);
+  padding: 0;
+  margin: 2px 12px 0 0;
+  white-space: nowrap;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  text-decoration-color: transparent;
+  transition: text-decoration-color 0.15s;
+}
+
+.viewAll:hover {
+  text-decoration-color: var(--primary);
+}
+
+/* ── Feature List ── */
+.featureList {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.featureRow {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  background: var(--surface-container-lowest);
+  border: none;
+  border-radius: var(--radius-xl);
+  padding: 3rem 2rem 2rem 3rem;
+  cursor: pointer;
+  text-align: left;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s, transform 0.12s;
+}
+
+.featureRow:hover {
+  box-shadow: var(--shadow-md);
+  transform: translateY(-1px);
+}
+
+.featureIcon {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--radius-xl);
+  background: var(--surface-container-low);
+  color: var(--primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.featureText {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.featureTitle {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.featureSub {
+  font-size: 12px;
+  color: var(--on-surface-variant);
+}
+
+.featureChevron {
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── Activity Card ── */
+.activityCard {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-2xl);
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.activityHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 14px 12px;
+}
+
+.activityBusIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-low);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activityInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.activityRoute {
+  font-size: 13.5px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.activityLocation {
+  font-size: 11.5px;
+  color: var(--on-surface-variant);
+}
+
+.onTimeBadge {
+  font-size: 10.5px;
+  font-weight: 700;
+  color: var(--primary);
+  background: rgba(0, 107, 10, 0.08);
+  border-radius: var(--radius-md);
+  padding: 3px 8px;
+  letter-spacing: 0.04em;
+  flex-shrink: 0;
+}
+
+/* ── Map Placeholder ── */
+.mapPlaceholder {
+  width: 100%;
+  height: 110px;
+  background: linear-gradient(180deg, var(--surface-container-low) 0%, var(--surface-container) 100%);
+  position: relative;
+  overflow: hidden;
+}
+
+.mapPlaceholder::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -60%;
+  width: 40%;
+  height: 100%;
+  background: linear-gradient(
+    90deg,
+    transparent,
+    rgba(0, 107, 10, 0.05),
+    transparent
+  );
+  animation: shimmer 1.8s infinite;
+}
+
+@keyframes shimmer {
+  0% { left: -60%; }
+  100% { left: 120%; }
+}
+
+.activityFooter {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 14px 12px;
+}
+
+.footerStat {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.footerLabel {
+  font-weight: 400;
+  color: var(--on-surface-variant);
+}
+
+.footerTime {
+  font-size: 12px;
+  color: var(--on-surface-variant);
+}
+
+.bottomPad {
+  height: 16px;
+}
+
+/* ── ETA Sheet ── */
+.sheetBackdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(41, 48, 44, 0.30);
+  z-index: 40;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.etaSheet {
+  position: fixed;
+  bottom: 1vh;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%;
+  max-width: 450px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-2xl);
+  z-index: 50;
+  transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+  max-height: 75vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: var(--shadow-lg);
+}
+
+.etaSheetOpen {
+  transform: translateX(-50%) translateY(0);
+}
+
+/* Drag handle */
+.sheetHandle {
+  width: 36px;
+  height: 4px;
+  background: var(--outline-variant);
+  border-radius: var(--radius-full);
+  margin: 12px auto 0;
+  flex-shrink: 0;
+}
+
+/* Sheet header */
+.sheetHeader {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 14px 16px 12px;
+  flex-shrink: 0;
+}
+
+.sheetBack,
+.sheetClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--on-surface);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  transition: background 0.15s;
+}
+
+.sheetBack:hover,
+.sheetClose:hover {
+  background: var(--surface-container-low);
+}
+
+.sheetBackPlaceholder {
+  width: 32px;
+}
+
+.sheetHeaderText {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.sheetTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.sheetSub {
+  font-size: 12px;
+  color: var(--primary);
+  margin: 0;
+}
+
+/* ── Route list (Step 1) ── */
+.sheetRouteList {
+  overflow-y: auto;
+  padding: 8px 0 16px;
+  scrollbar-width: none;
+}
+
+.sheetRouteList::-webkit-scrollbar {
+  display: none;
+}
+
+.sheetRouteRow {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 14px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  text-align: left;
+  transition: background 0.12s;
+}
+
+.sheetRouteRow:hover {
+  background: var(--surface-container-low);
+}
+
+.sheetRouteDot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.sheetRouteInfo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sheetRouteName {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+
+.sheetRouteMeta {
+  font-size: 12px;
+  color: var(--primary-dim);
+}
+
+/* ── Stop ETA list (Step 2) ── */
+.sheetStopList {
+  overflow-y: auto;
+  padding: 8px 0 24px;
+  scrollbar-width: none;
+}
+
+.sheetStopList::-webkit-scrollbar {
+  display: none;
+}
+
+.sheetStopRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 13px 20px;
+}
+
+.sheetStopDot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2.5px solid;
+  background: var(--surface-container-lowest);
+  flex-shrink: 0;
+}
+
+.sheetStopName {
+  flex: 1;
+  font-size: 13.5px;
+  color: var(--on-surface);
+  font-weight: 500;
+}
+
+.sheetEtaBadge {
+  font-size: 12px;
+  font-weight: 700;
+  padding: 4px 10px;
+  border-radius: var(--radius-md);
+  flex-shrink: 0;
+}
+
+.sheetEtaNone {
+  font-size: 13px;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+.activityEmpty {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-muted);
+  box-shadow: var(--shadow-sm);
+}

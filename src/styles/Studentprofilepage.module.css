@@ -1,0 +1,423 @@
+.page {
+  width: 100%;
+  height: 100dvh;
+  background: var(--surface);
+  display: flex;
+  flex-direction: column;
+  margin: 0 auto;
+  overflow-y: auto;
+}
+
+.header {
+  padding: 20px 20px 12px;
+  background: var(--surface-container-lowest);
+  box-shadow: var(--shadow-sm);
+}
+
+.headerTitle {
+  font-size: 17px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin: 0;
+  text-align: center;
+}
+
+.scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 24px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  scrollbar-width: none;
+}
+
+.scroll::-webkit-scrollbar { display: none; }
+
+.banner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 28px 16px 24px;
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-2xl);
+  box-shadow: var(--shadow-sm);
+}
+
+.avatarRing {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  background: var(--gradient-primary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-glow);
+}
+
+.avatar {
+  font-size: 26px;
+  font-weight: 800;
+  color: var(--on-primary);
+  letter-spacing: 0.04em;
+}
+
+.bannerName {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.roleBadge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--primary);
+  background: rgba(0, 107, 10, 0.08);
+  padding: 4px 10px;
+  border-radius: var(--radius-full);
+}
+
+.card {
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-2xl);
+  padding: 16px;
+  box-shadow: var(--shadow-sm);
+}
+
+.cardTopRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.cardTitle {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 11.5px;
+  font-weight: 700;
+  color: var(--primary-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+}
+
+.editBtn {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--surface-container-low);
+  color: var(--primary);
+  border: none;
+  border-radius: var(--radius-md);
+  padding: 6px 12px;
+  font-size: 12.5px;
+  font-weight: 700;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.editBtn:hover { background: rgba(0, 107, 10, 0.12); }
+
+.field {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 10px 0;
+}
+
+.securityRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 10px 0;
+  text-align: left;
+  transition: opacity 0.15s;
+}
+.securityRow:hover { opacity: 0.75; }
+
+.fieldIcon {
+  width: 34px;
+  height: 34px;
+  border-radius: var(--radius-lg);
+  background: var(--surface-container-low);
+  color: var(--on-surface-variant);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  margin-top: 2px;
+}
+
+.fieldBody {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.fieldLabel {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--primary-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.fieldValue {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--on-surface);
+}
+
+.fieldInput {
+  font-size: 14.5px;
+  font-weight: 500;
+  color: var(--on-surface);
+  border: none;
+  border-bottom: 2px solid var(--primary);
+  background: transparent;
+  outline: none;
+  padding: 4px 0;
+  width: 100%;
+  box-shadow: 0 2px 0 -1px rgba(89, 238, 80, 0.30);
+}
+.fieldInput::placeholder { color: var(--text-muted); }
+
+.divider {
+  height: 1px;
+  background: rgba(168, 175, 169, 0.20);
+  margin: 4px 0;
+}
+
+.errorMsg {
+  font-size: 12.5px;
+  color: var(--secondary);
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  background: var(--secondary-container);
+  border-radius: var(--radius-md);
+}
+
+.successMsg {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 12.5px;
+  color: var(--primary);
+  margin: 8px 0 0;
+  padding: 8px 12px;
+  background: rgba(0, 107, 10, 0.08);
+  border-radius: var(--radius-md);
+  font-weight: 600;
+}
+
+.actionRow {
+  display: flex;
+  gap: 10px;
+  margin-top: 16px;
+}
+
+.cancelBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px;
+  border-radius: var(--radius-xl);
+  border: none;
+  background: var(--surface-container-low);
+  color: var(--on-surface-variant);
+  font-size: 13.5px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cancelBtn:hover { background: var(--surface-container); }
+
+.saveBtn {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  padding: 11px;
+  border-radius: var(--radius-xl);
+  border: none;
+  background: var(--gradient-primary);
+  color: var(--on-primary);
+  font-size: 13.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: filter 0.15s;
+}
+.saveBtn:hover { filter: brightness(1.1); }
+.saveBtn:disabled,
+.cancelBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+.signOutBtn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  width: 100%;
+  padding: 14px;
+  border-radius: var(--radius-xl);
+  border: none;
+  background: var(--surface-container-lowest);
+  color: var(--secondary);
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow 0.15s;
+}
+.signOutBtn:hover { box-shadow: var(--shadow-md); }
+.signOutBtn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+/* ─────────────────────────────────────
+   PASSWORD SHEET
+───────────────────────────────────── */
+.backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(41, 48, 44, 0.30);
+  z-index: 40;
+  animation: fadeIn 0.2s ease;
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.pwSheet {
+  position: fixed;
+  bottom: 1vh;
+  left: 50%;
+  transform: translateX(-50%) translateY(100%);
+  width: 100%;
+  max-width: 390px;
+  background: var(--glass-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border-radius: var(--radius-2xl);
+  z-index: 50;
+  transition: transform 0.32s cubic-bezier(0.32, 0.72, 0, 1);
+  box-shadow: var(--shadow-lg);
+}
+
+.pwSheetOpen {
+  transform: translateX(-50%) translateY(0);
+}
+
+.sheetHandle {
+  width: 36px;
+  height: 4px;
+  background: var(--outline-variant);
+  border-radius: var(--radius-full);
+  margin: 12px auto 0;
+}
+
+.sheetHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  padding: 16px 16px 12px;
+}
+
+.sheetHeaderText {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.sheetTitle {
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--on-surface);
+  margin: 0;
+}
+
+.sheetSub {
+  font-size: 12px;
+  color: var(--primary-dim);
+  margin: 0;
+}
+
+.sheetClose {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--on-surface);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  border-radius: var(--radius-md);
+  transition: background 0.15s;
+}
+.sheetClose:hover { background: var(--surface-container-low); }
+
+.sheetBody {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.sheetField {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.sheetLabel {
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--primary-dim);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+
+/* Password input with eye toggle */
+.passwordWrap {
+  display: flex;
+  align-items: center;
+  border-bottom: 2px solid rgba(168, 175, 169, 0.40);
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.passwordWrap:focus-within {
+  border-bottom-color: var(--primary);
+  box-shadow: 0 2px 0 -1px rgba(89, 238, 80, 0.30);
+}
+
+.passwordWrap .fieldInput {
+  border-bottom: none;
+  box-shadow: none;
+  flex: 1;
+}
+
+.eyeBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  color: var(--text-muted);
+  padding: 4px;
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+}
+.eyeBtn:hover { color: var(--on-surface); }
