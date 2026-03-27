@@ -1,5 +1,5 @@
 .page {
-  width: 100vw;
+  width: 100%;
   background: var(--surface);
   display: flex;
   flex-direction: column;
@@ -9,6 +9,6 @@
 /* ── Floating dock wrapper ───────────────────────────── */
 .dockWrap {
   flex-shrink: 0;
-  padding: 10px 16px 14px;
+  padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
   background: transparent;
 }
