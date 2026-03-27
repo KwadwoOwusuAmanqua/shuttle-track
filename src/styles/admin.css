@@ -77,3 +77,182 @@
   overflow-y: auto;
   background: var(--surface);
 }
+
+/* ── Manager panels (Routes / Buses / Stops) ── */
+.manager {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  padding: 24px;
+  height: 100%;
+  box-sizing: border-box;
+}
+
+.manager-form {
+  background: var(--surface-container-low);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.manager-form h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--on-surface);
+  margin: 0 0 4px;
+}
+
+.form-row {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.form-row label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--on-surface-variant);
+}
+
+.form-row input,
+.form-row select {
+  padding: 9px 12px;
+  border: 1.5px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.form-row input:focus,
+.form-row select:focus {
+  border-color: var(--primary);
+}
+
+.color-preview {
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-md);
+  border: 1.5px solid var(--outline-variant);
+}
+
+.form-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.btn-primary {
+  flex: 1;
+  padding: 10px 16px;
+  background: var(--primary);
+  color: var(--on-primary);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn-primary:hover { opacity: 0.88; }
+.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+
+.btn-secondary {
+  padding: 10px 16px;
+  background: var(--surface-container);
+  color: var(--on-surface-variant);
+  border: none;
+  border-radius: var(--radius-md);
+  font-size: 14px;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.btn-secondary:hover { background: var(--surface-container-high); }
+
+.manager-list {
+  background: var(--surface-container-low);
+  border-radius: var(--radius-xl);
+  padding: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  overflow-y: auto;
+}
+
+.manager-list h2 {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--on-surface);
+  margin: 0 0 8px;
+}
+
+.list-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 12px;
+  background: var(--surface-container-lowest);
+  border-radius: var(--radius-md);
+}
+
+.color-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  flex-shrink: 0;
+}
+
+.item-name {
+  flex: 1;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--on-surface);
+}
+
+.item-id {
+  font-size: 12px;
+  color: var(--on-surface-variant);
+}
+
+.item-actions {
+  display: flex;
+  gap: 6px;
+}
+
+.btn-edit,
+.btn-delete {
+  padding: 5px 10px;
+  border: none;
+  border-radius: var(--radius-sm);
+  font-size: 12px;
+  cursor: pointer;
+  transition: opacity 0.15s;
+}
+
+.btn-edit {
+  background: rgba(0, 107, 10, 0.1);
+  color: var(--primary);
+}
+
+.btn-delete {
+  background: rgba(186, 26, 26, 0.1);
+  color: var(--secondary);
+}
+
+.btn-edit:hover,
+.btn-delete:hover { opacity: 0.75; }
+
+.empty-msg {
+  font-size: 13px;
+  color: var(--on-surface-variant);
+  text-align: center;
+  padding: 24px 0;
+}
