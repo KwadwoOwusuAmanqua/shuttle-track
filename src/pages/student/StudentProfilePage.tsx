@@ -8,7 +8,13 @@ import styles from "../../styles/StudentProfilePage.module.css";
 import Colors from "../../theme/colors";
 
 
-function PasswordInput({ value, onChange, placeholder }) {
+interface PasswordInputProps {
+  value: string;
+  onChange: React.ChangeEventHandler<HTMLInputElement>;
+  placeholder: string;
+}
+
+function PasswordInput({ value, onChange, placeholder }: PasswordInputProps) {
   const [show, setShow] = useState(false);
   return (
     <div className={styles.passwordWrap}>
@@ -39,7 +45,7 @@ export default function StudentProfilePage() {
   const [displayName, setDisplayName] = useState(user?.displayName ?? "");
   const [email, setEmail] = useState(user?.email ?? "");
   const [saving, setSaving] = useState(false);
-  const [profileError, setProfileError] = useState(null);
+  const [profileError, setProfileError] = useState<string | null>(null);
 
   /* ── Password sheet state ── */
   const [pwSheetOpen, setPwSheetOpen] = useState(false);
@@ -47,7 +53,7 @@ export default function StudentProfilePage() {
   const [newPw, setNewPw] = useState("");
   const [confirmPw, setConfirmPw] = useState("");
   const [pwSaving, setPwSaving] = useState(false);
-  const [pwError, setPwError] = useState(null);
+  const [pwError, setPwError] = useState<string | null>(null);
   const [pwSuccess, setPwSuccess] = useState(false);
 
   /* ── Sign out ── */
@@ -78,11 +84,11 @@ export default function StudentProfilePage() {
     setSaving(true);
     setProfileError(null);
     try {
-      await updateUserProfile(user.uid, {
+      await updateUserProfile(user!.uid, {
         displayName: displayName.trim(),
         email: email.trim(),
       });
-      setUser({ ...user, displayName: displayName.trim(), email: email.trim() });
+      setUser({ ...user!, displayName: displayName.trim(), email: email.trim() });
       setEditMode(false);
     } catch {
       setProfileError("Failed to save changes. Please try again.");
@@ -119,9 +125,10 @@ export default function StudentProfilePage() {
       setPwSuccess(true);
       setTimeout(closePwSheet, 1500); // close after showing success
     } catch (err) {
-      if (err.code === "auth/wrong-password" || err.code === "auth/invalid-credential") {
+      const code = (err as { code?: string }).code;
+      if (code === "auth/wrong-password" || code === "auth/invalid-credential") {
         setPwError("Current password is incorrect.");
-      } else if (err.code === "auth/weak-password") {
+      } else if (code === "auth/weak-password") {
         setPwError("New password is too weak.");
       } else {
         setPwError("Something went wrong. Please try again.");

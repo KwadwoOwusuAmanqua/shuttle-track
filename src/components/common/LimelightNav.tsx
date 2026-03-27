@@ -52,7 +52,7 @@ export function LimelightNav({ items, activeIndex = 0, onTabChange }: LimelightN
       {items.map(({ id, icon, label, onClick }, index) => (
         <a
           key={id}
-          ref={(el) => (navItemRefs.current[index] = el)}
+          ref={(el) => { navItemRefs.current[index] = el; }}
           onClick={() => {
             onTabChange?.(index);
             onClick?.();
@@ -73,14 +73,14 @@ export function LimelightNav({ items, activeIndex = 0, onTabChange }: LimelightN
             userSelect: 'none',
           }}
         >
-          {cloneElement(icon, {
+          {cloneElement(icon as React.ReactElement<React.SVGProps<SVGSVGElement>>, {
             style: {
               width: 22,
               height: 22,
               transition: 'opacity 0.15s ease, color 0.15s ease',
               opacity: activeIndex === index ? 1 : 0.38,
               color: activeIndex === index ? 'var(--primary)' : 'var(--on-surface)',
-              ...(icon.props.style ?? {}),
+              ...((icon.props as React.SVGProps<SVGSVGElement>).style ?? {}),
             },
           })}
           {label && (
