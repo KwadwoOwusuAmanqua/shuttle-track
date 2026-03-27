@@ -71,17 +71,22 @@ export default function RouteManager() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          <select value={color} onChange={(e) => setColor(e.target.value)}>
-            {COLORS.map((c) => (
-              <option key={c} value={c} style={{ backgroundColor: c, color: Colors.on_primary }}>
-                {c}
-              </option>
-            ))}
-          </select>
-          <span
-            className="color-preview"
-            style={{ backgroundColor: color }}
-          />
+        </div>
+        <div className="form-row">
+          <label>Colour</label>
+          <div className="color-row">
+            <select value={color} onChange={(e) => setColor(e.target.value)}>
+              {COLORS.map((c) => (
+                <option key={c} value={c}>
+                  {c}
+                </option>
+              ))}
+            </select>
+            <span
+              className="color-preview"
+              style={{ backgroundColor: color }}
+            />
+          </div>
         </div>
         <div className="form-actions">
           <button className="btn-primary" onClick={handleSave} disabled={saving}>

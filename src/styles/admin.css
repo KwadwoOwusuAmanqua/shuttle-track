@@ -1,151 +1,286 @@
+/* ═══════════════════════════════════════════════════
+   ADMIN LAYOUT
+   ═══════════════════════════════════════════════════ */
 .admin-layout {
   display: flex;
   height: 100vh;
   overflow: hidden;
+  background: var(--surface);
+  font-family: 'Inter', sans-serif;
 }
 
+/* ── Sidebar ── */
 .admin-sidebar {
-  width: 220px;
+  width: 230px;
   flex-shrink: 0;
   background: var(--surface-container-low);
-  color: var(--on-surface);
+  border-right: 1px solid var(--outline-variant);
   display: flex;
   flex-direction: column;
-  padding: 24px 16px;
-  gap: 8px;
+  padding: 20px 12px;
+  gap: 4px;
 }
 
 .admin-brand {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding-bottom: 20px;
+  padding: 8px 10px 20px;
+  border-bottom: 1px solid var(--outline-variant);
   margin-bottom: 8px;
 }
 
-.admin-brand span {
-  font-size: 24px;
-}
+.admin-brand span { font-size: 22px; }
 
 .admin-brand h2 {
-  font-size: 15px;
-  font-weight: 600;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--on-surface);
+  letter-spacing: -0.01em;
 }
 
 .admin-nav {
   display: flex;
   flex-direction: column;
-  gap: 4px;
+  gap: 2px;
   flex: 1;
 }
 
 .admin-link {
-  display: block;
-  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
   border-radius: var(--radius-md);
   color: var(--on-surface-variant);
   text-decoration: none;
-  font-size: 14px;
+  font-size: 13.5px;
+  font-weight: 500;
   transition: background 0.15s, color 0.15s;
 }
 
-.admin-link:hover,
+.admin-link:hover {
+  background: rgba(0, 107, 10, 0.06);
+  color: var(--on-surface);
+}
+
 .admin-link.active {
-  background: rgba(0, 107, 10, 0.08);
+  background: rgba(0, 107, 10, 0.1);
   color: var(--primary);
+  font-weight: 600;
 }
 
 .admin-signout {
-  padding: 10px 14px;
-  background: var(--surface-container);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 9px 12px;
+  background: transparent;
   color: var(--on-surface-variant);
   border: none;
   border-radius: var(--radius-md);
-  font-size: 14px;
+  font-size: 13.5px;
+  font-weight: 500;
   cursor: pointer;
   text-align: left;
-  transition: background 0.15s;
+  width: 100%;
+  transition: background 0.15s, color 0.15s;
+  margin-top: 4px;
+  border-top: 1px solid var(--outline-variant);
+  padding-top: 16px;
+  margin-top: 8px;
 }
 
 .admin-signout:hover {
-  background: rgba(0, 107, 10, 0.12);
-  color: var(--primary);
+  color: var(--secondary);
 }
 
+/* ── Main content ── */
 .admin-content {
   flex: 1;
   overflow-y: auto;
   background: var(--surface);
 }
 
-/* ── Manager panels (Routes / Buses / Stops) ── */
+/* ═══════════════════════════════════════════════════
+   MANAGER PANELS (Routes / Buses / Stops)
+   ═══════════════════════════════════════════════════ */
 .manager {
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-  padding: 24px;
+  grid-template-columns: 380px 1fr;
+  grid-template-rows: auto 1fr;
+  gap: 0;
   height: 100%;
-  box-sizing: border-box;
 }
 
+/* Page title — spans full width */
+.manager > h2 {
+  grid-column: 1 / -1;
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--on-surface);
+  padding: 24px 28px 20px;
+  border-bottom: 1px solid var(--outline-variant);
+  margin: 0;
+  letter-spacing: -0.02em;
+}
+
+/* ── Form panel (left) ── */
 .manager-form {
-  background: var(--surface-container-low);
-  border-radius: var(--radius-xl);
-  padding: 24px;
+  background: var(--surface-container-lowest);
+  border-right: 1px solid var(--outline-variant);
+  padding: 24px 20px;
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 14px;
+  overflow-y: auto;
 }
 
-.manager-form h2 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--on-surface);
+.manager-form h3 {
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--on-surface-variant);
   margin: 0 0 4px;
 }
 
+/* ── Form rows ── */
 .form-row {
   display: flex;
   flex-direction: column;
-  gap: 6px;
+  gap: 8px;
 }
 
-.form-row label {
-  font-size: 12px;
+/* When form-row holds multiple label>input pairs, lay them side by side */
+.form-row > label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 11.5px;
   font-weight: 600;
   text-transform: uppercase;
   letter-spacing: 0.06em;
   color: var(--on-surface-variant);
 }
 
-.form-row input,
-.form-row select {
-  padding: 9px 12px;
+/* Top-level inputs/selects with no label wrapper */
+.form-row > input,
+.form-row > select {
+  padding: 9px 11px;
   border: 1.5px solid var(--outline-variant);
   border-radius: var(--radius-md);
   background: var(--surface-container-lowest);
   color: var(--on-surface);
-  font-size: 14px;
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+/* Inputs inside label wrappers */
+.form-row label input,
+.form-row label select {
+  padding: 8px 10px;
+  border: 1.5px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font-size: 13.5px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-row input:focus,
+.form-row select:focus,
+.form-row label input:focus,
+.form-row label select:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 107, 10, 0.08);
+}
+
+/* Two-column sub-grid for paired labels (speed+position, lat+lng+order) */
+.form-row-cols {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.form-row-cols-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 80px;
+  gap: 10px;
+}
+
+.form-row-cols > label,
+.form-row-cols-3 > label {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  font-size: 11.5px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--on-surface-variant);
+}
+
+.form-row-cols label input,
+.form-row-cols-3 label input {
+  padding: 8px 10px;
+  border: 1.5px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font-size: 13px;
+  outline: none;
+  transition: border-color 0.15s, box-shadow 0.15s;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.form-row-cols label input:focus,
+.form-row-cols-3 label input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(0, 107, 10, 0.08);
+}
+
+/* Color swatch row */
+.color-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.color-row select {
+  flex: 1;
+  padding: 8px 10px;
+  border: 1.5px solid var(--outline-variant);
+  border-radius: var(--radius-md);
+  background: var(--surface-container-lowest);
+  color: var(--on-surface);
+  font-size: 13.5px;
   outline: none;
   transition: border-color 0.15s;
 }
 
-.form-row input:focus,
-.form-row select:focus {
-  border-color: var(--primary);
-}
+.color-row select:focus { border-color: var(--primary); }
 
 .color-preview {
-  width: 32px;
-  height: 32px;
+  width: 36px;
+  height: 36px;
   border-radius: var(--radius-md);
-  border: 1.5px solid var(--outline-variant);
+  border: 2px solid var(--outline-variant);
+  flex-shrink: 0;
 }
 
+/* ── Action buttons ── */
 .form-actions {
   display: flex;
   gap: 8px;
-  margin-top: 4px;
+  margin-top: 6px;
 }
 
 .btn-primary {
@@ -155,104 +290,122 @@
   color: var(--on-primary);
   border: none;
   border-radius: var(--radius-md);
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 600;
   cursor: pointer;
   transition: opacity 0.15s;
+  letter-spacing: 0.01em;
 }
 
-.btn-primary:hover { opacity: 0.88; }
-.btn-primary:disabled { opacity: 0.45; cursor: not-allowed; }
+.btn-primary:hover:not(:disabled) { opacity: 0.88; }
+.btn-primary:disabled { opacity: 0.4; cursor: not-allowed; }
 
 .btn-secondary {
   padding: 10px 16px;
   background: var(--surface-container);
   color: var(--on-surface-variant);
-  border: none;
+  border: 1.5px solid var(--outline-variant);
   border-radius: var(--radius-md);
-  font-size: 14px;
+  font-size: 13.5px;
+  font-weight: 500;
   cursor: pointer;
   transition: background 0.15s;
 }
 
 .btn-secondary:hover { background: var(--surface-container-high); }
 
+/* ── List panel (right) ── */
 .manager-list {
-  background: var(--surface-container-low);
-  border-radius: var(--radius-xl);
-  padding: 24px;
+  background: var(--surface);
+  padding: 20px 24px;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 6px;
   overflow-y: auto;
 }
 
 .manager-list h2 {
-  font-size: 16px;
-  font-weight: 600;
-  color: var(--on-surface);
-  margin: 0 0 8px;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.07em;
+  color: var(--on-surface-variant);
+  margin: 0 0 10px;
 }
 
 .list-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 10px 12px;
+  gap: 12px;
+  padding: 12px 14px;
   background: var(--surface-container-lowest);
-  border-radius: var(--radius-md);
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-lg);
+  transition: border-color 0.15s;
 }
 
+.list-item:hover { border-color: var(--outline); }
+
 .color-dot {
-  width: 12px;
-  height: 12px;
+  width: 10px;
+  height: 10px;
   border-radius: 50%;
   flex-shrink: 0;
 }
 
 .item-name {
   flex: 1;
-  font-size: 14px;
+  font-size: 13.5px;
   font-weight: 500;
   color: var(--on-surface);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .item-id {
-  font-size: 12px;
+  font-size: 11.5px;
   color: var(--on-surface-variant);
+  white-space: nowrap;
+  background: var(--surface-container);
+  padding: 2px 8px;
+  border-radius: var(--radius-full);
 }
 
 .item-actions {
   display: flex;
   gap: 6px;
+  flex-shrink: 0;
 }
 
 .btn-edit,
 .btn-delete {
-  padding: 5px 10px;
+  padding: 5px 12px;
   border: none;
-  border-radius: var(--radius-sm);
+  border-radius: var(--radius-md);
   font-size: 12px;
+  font-weight: 500;
   cursor: pointer;
   transition: opacity 0.15s;
 }
 
 .btn-edit {
-  background: rgba(0, 107, 10, 0.1);
+  background: rgba(0, 107, 10, 0.09);
   color: var(--primary);
 }
 
 .btn-delete {
-  background: rgba(186, 26, 26, 0.1);
+  background: rgba(186, 26, 26, 0.09);
   color: var(--secondary);
 }
 
 .btn-edit:hover,
-.btn-delete:hover { opacity: 0.75; }
+.btn-delete:hover { opacity: 0.7; }
 
 .empty-msg {
   font-size: 13px;
   color: var(--on-surface-variant);
   text-align: center;
-  padding: 24px 0;
+  padding: 40px 0;
+  opacity: 0.6;
 }

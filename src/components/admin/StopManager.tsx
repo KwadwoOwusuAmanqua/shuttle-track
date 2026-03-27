@@ -97,7 +97,7 @@ export default function StopManager() {
             ))}
           </select>
         </div>
-        <div className="form-row">
+        <div className="form-row-cols-3">
           <label>
             Longitude
             <input

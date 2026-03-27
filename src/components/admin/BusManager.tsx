@@ -95,7 +95,7 @@ export default function BusManager() {
             ))}
           </select>
         </div>
-        <div className="form-row">
+        <div className="form-row-cols">
           <label>
             Speed (deg/tick)
             <input
