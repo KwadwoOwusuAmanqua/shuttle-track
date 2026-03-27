@@ -18,8 +18,14 @@ export default function SignUpPage() {
   const { setUser } = useAuth();
   const navigate = useNavigate();
 
-  async function handleSubmit(e: React.FormEvent) {
+  const passwordsMatch = confirmPassword === "" || password === confirmPassword;
+
+  async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
+    if (!agreedToTerms) {
+      setError("You must agree to the Terms of Service and Privacy Policy.");
+      return;
+    }
     if (password !== confirmPassword) {
       setError("Passwords do not match.");
       return;
@@ -185,7 +191,11 @@ export default function SignUpPage() {
                     value={confirmPassword}
                     onChange={(e) => setConfirmPassword(e.target.value)}
                     placeholder="••••••••"
-                    className="auth-input auth-input--has-left-icon auth-input--padded-right"
+                    className={`auth-input auth-input--has-left-icon auth-input--padded-right${
+                      confirmPassword && !passwordsMatch ? " auth-input--error" : ""
+                    }${
+                      confirmPassword && passwordsMatch ? " auth-input--success" : ""
+                    }`}
                     minLength={6}
                     required
                   />
@@ -202,14 +212,16 @@ export default function SignUpPage() {
             </div>
 
             {/* Terms */}
-            <div className="auth-terms-row">
+            <div className={`auth-terms-row${!agreedToTerms && error?.includes("Terms") ? " auth-terms-row--error" : ""}`}>
               <input
                 id="terms"
                 type="checkbox"
                 checked={agreedToTerms}
-                onChange={(e) => setAgreedToTerms(e.target.checked)}
+                onChange={(e) => {
+                  setAgreedToTerms(e.target.checked);
+                  if (e.target.checked && error?.includes("Terms")) setError(null);
+                }}
                 className="auth-checkbox"
-                required
               />
               <label htmlFor="terms" className="auth-terms-label">
                 I agree to the{" "}
@@ -222,7 +234,7 @@ export default function SignUpPage() {
             <button
               type="submit"
               className="auth-btn"
-              disabled={submitting}
+              disabled={submitting || !passwordsMatch}
             >
               {submitting ? "Creating account…" : "Sign Up"}
             </button>

@@ -7,17 +7,13 @@ import {
   reauthenticateWithCredential,
   updatePassword,
   EmailAuthProvider,
-  sendPasswordResetEmail, // Added for the reset logic
+  sendPasswordResetEmail,
 } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
 import { auth, db } from "./firebase";
 import type { UserProfile } from "../types/shuttle";
-// Updated to match the Vite-safe service name
-import { handleForgotPassword } from "../lib/email-service"; 
 
-/**
- * Creates a new user in Firebase Auth and a corresponding profile in Firestore.
- */
+
 export async function signUp(
   email: string,
   password: string,
@@ -51,21 +47,8 @@ export async function signOut(): Promise<void> {
   await firebaseSignOut(auth);
 }
 
-/**
- * Handles the password reset by combining Firebase logic and Resend branding.
- */
-export async function sendPasswordReset(email: string) {
-  // 1. Tell Firebase to handle the internal reset logic (invalidates old tokens)
+export async function sendPasswordReset(email: string): Promise<void> {
   await sendPasswordResetEmail(auth, email);
-
-  // 2. Trigger your custom Resend email for the "Campus Shuttle" branding
-  const result = await handleForgotPassword(email);
-
-  if (!result.success) {
-    throw new Error("Could not send custom branded email.");
-  }
-  
-  return true;
 }
 
 export async function changePassword(currentPassword: string, newPassword: string): Promise<void> {

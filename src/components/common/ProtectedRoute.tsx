@@ -9,7 +9,7 @@ interface Props {
 
 export default function ProtectedRoute({
   allowedRole,
-  redirectTo = "/login",
+  redirectTo = "/landing",
 }: Props) {
   const { user, loading } = useAuth();
 

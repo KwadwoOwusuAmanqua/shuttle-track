@@ -1,5 +1,13 @@
 // src/types/shuttle.ts
 
+export interface UserProfile {
+  uid: string;
+  email: string;
+  displayName: string;
+  role: "student" | "admin";
+  photoURL?: string;
+}
+
 export interface Route {
   id: string;
   name: string;

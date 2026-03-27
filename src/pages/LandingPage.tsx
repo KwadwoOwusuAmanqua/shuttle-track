@@ -1,56 +1,7 @@
 import { useNavigate } from "react-router-dom";
-import {
-  Navigation,
-  MapPin,
-  Clock,
-  CalendarCheck,
-  Bell,
-  ChevronRight,
-  Zap,
-} from "lucide-react";
+import { ArrowRight, Zap, MapPin, Bell, Leaf, CalendarDays, Users, Navigation, Clock, Home, Map } from "lucide-react";
 import { ROUTES, STOPS } from "../services/mockShuttleData";
 import styles from "../styles/LandingPage.module.css";
-
-const FEATURES = [
-  {
-    icon: <MapPin size={24} strokeWidth={2} />,
-    title: "Live GPS Tracking",
-    desc: "See every shuttle's exact location on the map, updated in real time.",
-  },
-  {
-    icon: <Clock size={24} strokeWidth={2} />,
-    title: "Arrival Estimates",
-    desc: "Get precise ETA for your stop so you never have to guess or wait unnecessarily.",
-  },
-  {
-    icon: <CalendarCheck size={24} strokeWidth={2} />,
-    title: "Full Schedules",
-    desc: "Browse peak-hour timetables for every route — morning, midday, and afternoon.",
-  },
-  {
-    icon: <Bell size={24} strokeWidth={2} />,
-    title: "Smart Notifications",
-    desc: "Get alerted when your shuttle is approaching or if a route is delayed.",
-  },
-];
-
-const STEPS = [
-  {
-    num: "01",
-    title: "Sign up in seconds",
-    desc: "Create your account with your university email — no approval needed.",
-  },
-  {
-    num: "02",
-    title: "Choose your route",
-    desc: "Pick from the four campus routes and see live shuttle positions.",
-  },
-  {
-    num: "03",
-    title: "Track & go",
-    desc: "Check ETAs, view stops, and head to your pickup point stress-free.",
-  },
-];
 
 export default function LandingPage() {
   const navigate = useNavigate();
@@ -62,194 +13,344 @@ export default function LandingPage() {
 
   return (
     <div className={styles.page}>
-      {/* ── Floating Navbar ── */}
-      <nav className={styles.nav}>
-        <div className={styles.navBrand}>
-          <span className={styles.navIcon}>
-            <Navigation size={14} strokeWidth={2.5} color="#ffffff" />
-          </span>
-          <span className={styles.navName}>Campus Transit</span>
-        </div>
-        <div className={styles.navActions}>
-          <button
-            className={styles.navLoginBtn}
-            onClick={() => navigate("/login")}
-          >
-            Sign in
-          </button>
-          <button
-            className={styles.navSignupBtn}
-            onClick={() => navigate("/signup")}
-          >
-            Get Started
-          </button>
-        </div>
-      </nav>
+      {/* ── Header ── */}
+      <header className={styles.header}>
+        <nav className={styles.nav}>
+          <span className={styles.navBrand}>Campus Transit</span>
 
-      {/* ── Hero ── */}
-      <section className={styles.hero}>
-        <div className={styles.heroBg} />
-        <div className={styles.heroDots} />
-
-        <div className={styles.heroContent}>
-          <span className={styles.heroEyebrow}>
-            <Zap size={11} strokeWidth={2.5} />
-            Real-time campus transportation
-          </span>
-
-          <h1 className={styles.heroTitle}>
-            Never Miss Your <span>Campus Shuttle</span> Again
-          </h1>
-
-          <p className={styles.heroSub}>
-            Track all four university shuttle routes live on the map, get
-            accurate arrival estimates, and browse full timetables — all in one
-            place.
-          </p>
-
-          <div className={styles.heroCtas}>
-            <button
-              className={styles.ctaPrimary}
-              onClick={() => navigate("/signup")}
-            >
-              Start Tracking Free
-              <ChevronRight size={16} strokeWidth={2.5} />
+          <div className={styles.navActions}>
+            <button className={styles.navSignIn} onClick={() => navigate("/login")}>
+              Sign In
             </button>
-            <button
-              className={styles.ctaSecondary}
-              onClick={() => navigate("/login")}
-            >
-              Sign in
+            <button className={styles.navCta} onClick={() => navigate("/signup")}>
+              Get Started
             </button>
           </div>
-        </div>
+        </nav>
+      </header>
 
-        <div className={styles.heroStats}>
-          <div className={styles.heroStat}>
-            <span className={styles.heroStatNum}>4</span>
-            <span className={styles.heroStatLabel}>Active routes</span>
-          </div>
-          <div className={styles.heroStat}>
-            <span className={styles.heroStatNum}>
-              {STOPS.length}
-            </span>
-            <span className={styles.heroStatLabel}>Bus stops</span>
-          </div>
-          <div className={styles.heroStat}>
-            <span className={styles.heroStatNum}>Live</span>
-            <span className={styles.heroStatLabel}>GPS updates</span>
-          </div>
-        </div>
-      </section>
+      <main className={styles.main}>
+        {/* ── Hero ── */}
+        <section className={styles.hero}>
+          <div className={styles.heroGrid}>
+            {/* Left: text */}
+            <div className={styles.heroLeft}>
+              <div className={styles.liveChip}>
+                <Zap size={13} strokeWidth={2.5} />
+                <span>Live Tracking Now Active</span>
+              </div>
 
-      {/* ── Features ── */}
-      <section className={styles.section}>
-        <p className={styles.sectionEyebrow}>
-          <span className="energy-bar" />
-          Features
-        </p>
-        <h2 className={styles.sectionTitle}>Everything you need, nothing you don't</h2>
-        <p className={styles.sectionSub}>
-          Built for students — fast, accurate, and easy to use on the go.
-        </p>
+              <h1 className={styles.heroTitle}>
+                Never Miss Your{" "}
+                <span className={styles.heroTitleAccent}>Campus Shuttle</span>{" "}
+                Again
+              </h1>
 
-        <div className={styles.featuresGrid}>
-          {FEATURES.map(({ icon, title, desc }) => (
-            <div key={title} className={styles.featureCard}>
-              <div className={styles.featureIconWrap}>{icon}</div>
-              <h3 className={styles.featureTitle}>{title}</h3>
-              <p className={styles.featureDesc}>{desc}</p>
+              <p className={styles.heroSub}>
+                Real-time tracking, accurate schedules, and intelligent route
+                planning designed for the modern student. Experience the future
+                of campus transit.
+              </p>
+
+              <div className={styles.heroCtas}>
+                <button
+                  className={styles.ctaGradient}
+                  onClick={() => navigate("/signup")}
+                >
+                  Track Live Now
+                  <ArrowRight size={20} strokeWidth={2.5} />
+                </button>
+
+                <div className={styles.avatarRow}>
+                  <div className={styles.avatarStack}>
+                    <img
+                      className={styles.avatar}
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRuj6MVPri-FtGr-L_k18TnO-JR-YOZIMjAIcvX-H_NMyaGXivHAexrWyX3vFUqV7VHLuY2lQkYb6zXa6bTPxdv0vTq99lwzwu96JZGem7fnYInyJg-RlKpsHCgjWncsTOcUkIBp2AfeNue3DoIQDXhyHWKX-BaPxt7FJb-EQzay90_4XwBwnY_lXs7wA2F9REJCo7PkAMpsvJtgIT6T7diOVAUrVliSwF0puFxr4jpZ461nxYfohVUyqSBH9MaRScJ1HgXK9uuok"
+                      alt="Student"
+                    />
+                    <img
+                      className={styles.avatar}
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh9t5KPOODrHmAcumTzxNVS52ZGnEsPB3RYGsbPPhaFLI_e-KT1zqelGxYaN099r8VOmty4rPNZkbWnsoX2RmYQ20uzoF_epYr8a4dQGfrHTtw5EKS7r5NPM-ysDazoFV3rhtmVWOxD7jCQcZbWDIr2cFC_XYfRUuuJ26iTePLrv_FxF5UVvBgNjueidG2iF7u7YPPJUrNqn0kraSZPWKS5qgUne74iruEb2CUFfjDue3YGAHaLGhzWQWV43TH8VK_DhbpbfzcYfw"
+                      alt="Student"
+                    />
+                    <img
+                      className={styles.avatar}
+                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfoLFWxgnTvqqQmka_0InDlrcFw3Rc3-BGwrs7OMuw4Nn38QJSw06SpsUxQQ73AAp4pvLe7PZWFlOmqeza2-ule5cXAiJS_g9475QcJ-D6H3w2aLyNF5PsaR3mGc0J_pBcZCP1z4qYAa4cM4ZSEbn4iBJ1dO3otQUYHhcnNMRte0z_8qRfZ3ZrLkkjUrgbKJwQW4GvQNHKi_5jxaDQDpk8upFm71SlqIvJRQYBIxaAF7ovwid5PV_ls_MhID_JbSVJHnAuXefNZbE"
+                      alt="Student"
+                    />
+                    <div className={styles.avatarCount}>+2k</div>
+                  </div>
+                  <span className={styles.avatarLabel}>Joined the flow</span>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
 
-      {/* ── Routes ── */}
-      <div className={styles.routesSection}>
-        <div className={styles.routesSectionInner}>
-          <p className={styles.sectionEyebrow}>
-            <span className="energy-bar" />
-            Campus Routes
-          </p>
+            {/* Right: visual */}
+            <div className={styles.heroRight}>
+              <div className={styles.heroBgTint} />
+              <div className={styles.heroImageWrap}>
+                <img
+                  className={styles.heroImage}
+                  src="https://lh3.googleusercontent.com/aida/ADBb0ugpnkxqP8yHYGUg7xjYfGyXc9KtH6uRjc0wlt5xyHwcU0yn-U9GVoxJiiIkhYdjBsl7t4QmSPk3D4l8hZSG-OTDMqwiK1tcxctruo85Yr0A5e3JhGar0qk2NFMdLag2KUkVOB7cq4Fk9iG3kdvFpKCRwJkt1sWxmvB0w1zpwrCEbhhxLyNJonnWys9HW5lYEVrA_qTAERjafpTL5IZqNaojG0PY4U44E7U2rDjo8IovUxz0C2sP8Wkz7ZgKvBkN4wengIIYiXXpjQ"
+                  alt="Campus shuttle bus"
+                />
+
+                {/* Glass arrival card */}
+                <div className={styles.arrivalCard}>
+                  <div className={styles.arrivalCardTop}>
+                    <div className={styles.arrivalLive}>
+                      <span className={styles.arrivalPulse} />
+                      <span className={styles.arrivalRoute}>Main Campus Express</span>
+                    </div>
+                    <span className={styles.arrivalEta}>Arriving in 2m</span>
+                  </div>
+                  <div className={styles.arrivalBar}>
+                    <div className={styles.arrivalBarFill} />
+                  </div>
+                </div>
+
+                {/* Floating mini map */}
+                <div className={styles.miniMap}>
+                  <MapPin size={22} strokeWidth={2} color="var(--primary)" className={styles.miniMapPin} />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Bento Features ── */}
+        <section id="features" className={styles.bentoSection}>
+          <div className={styles.bentoGrid}>
+            {/* Large: Live Map */}
+            <div className={`${styles.bentoCard} ${styles.bentoLarge}`}>
+              <div className={styles.bentoBgIcon}>
+                <MapPin size={280} strokeWidth={0.3} color="var(--primary)" />
+              </div>
+              <h3 className={styles.bentoTitle}>Live Tracking Map</h3>
+              <p className={styles.bentoDesc}>
+                See every shuttle's exact location in real-time. Our GPS
+                integration provides sub-meter accuracy so you can plan your
+                walk down to the second.
+              </p>
+              <div className={styles.bentoBadges}>
+                <span className={styles.bentoBadge}>
+                  <span className={styles.bentoBadgeDot} />
+                  99.9% Up-time
+                </span>
+                <span className={styles.bentoBadge}>
+                  <Zap size={12} strokeWidth={2.5} color="var(--primary)" />
+                  Low Latency
+                </span>
+              </div>
+            </div>
+
+            {/* Green: Smart Alerts */}
+            <div className={`${styles.bentoCard} ${styles.bentoGreen}`}>
+              <Bell size={44} strokeWidth={1.5} color="var(--on-primary)" />
+              <div>
+                <h3 className={`${styles.bentoTitle} ${styles.bentoTitleWhite}`}>
+                  Smart Alerts
+                </h3>
+                <p className={styles.bentoDescWhite}>
+                  Get notified 5 minutes before your preferred shuttle reaches
+                  your stop. Never wait in the cold again.
+                </p>
+              </div>
+            </div>
+
+            {/* Small: Impact */}
+            <div className={`${styles.bentoCard} ${styles.bentoSmall}`}>
+              <div className={styles.bentoSmallIcon}>
+                <Leaf size={22} strokeWidth={1.5} color="var(--primary)" />
+              </div>
+              <h4 className={styles.bentoSmallTitle}>Impact Score</h4>
+              <p className={styles.bentoSmallDesc}>
+                Track how much CO₂ you're saving by choosing public transit over
+                ride-shares.
+              </p>
+            </div>
+
+            {/* Small: Routes */}
+            <div className={`${styles.bentoCard} ${styles.bentoSmallAlt}`}>
+              <div className={styles.bentoSmallIcon}>
+                <CalendarDays size={22} strokeWidth={1.5} color="var(--primary)" />
+              </div>
+              <h4 className={styles.bentoSmallTitle}>Future Routes</h4>
+              <p className={styles.bentoSmallDesc}>
+                Check upcoming schedules and holiday routes weeks in advance
+                with 100% confidence.
+              </p>
+            </div>
+
+            {/* Small: Crowd */}
+            <div className={`${styles.bentoCard} ${styles.bentoSmallTeal}`}>
+              <div className={styles.bentoSmallIcon}>
+                <Users size={22} strokeWidth={1.5} color="var(--secondary)" />
+              </div>
+              <h4 className={styles.bentoSmallTitle}>Crowd Logic</h4>
+              <p className={styles.bentoSmallDesc}>
+                See real-time occupancy levels. Know if your shuttle is full
+                before it even arrives.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        {/* ── Routes ── */}
+        <section id="routes" className={styles.routesSection}>
+          <div className={styles.routesInner}>
+          <p className={styles.sectionEyebrow}>Campus Routes</p>
           <h2 className={styles.sectionTitle}>Four routes across campus</h2>
           <p className={styles.sectionSub}>
-            Each route runs on a fixed schedule with live shuttle positions you
-            can track in real time.
+            Each route runs on a fixed schedule with live shuttle positions.
           </p>
-
-          <div className={styles.routePills}>
+          <div className={styles.routeCarousel}>
             {routeStopCounts.map((route) => (
               <button
                 key={route.id}
-                className={styles.routePill}
+                className={styles.routeCard}
                 onClick={() => navigate("/signup")}
-                aria-label={`View ${route.name} route`}
               >
-                <span
-                  className={styles.routePillDot}
-                  style={{ background: route.color }}
-                />
-                <span className={styles.routePillName}>{route.name}</span>
-                <span className={styles.routePillMeta}>
-                  {route.stopCount} stops
-                </span>
-                <ChevronRight size={14} strokeWidth={2} color="var(--text-muted)" />
+                <div className={styles.routeCardAccent} style={{ background: route.color }} />
+                <div className={styles.routeCardBody}>
+                  <span className={styles.routeDot} style={{ background: route.color }} />
+                  <span className={styles.routeName}>{route.name}</span>
+                  <span className={styles.routeMeta}>{route.stopCount} stops</span>
+                  <span
+                    className={styles.routeLive}
+                    style={{ color: route.color, background: `${route.color}18` }}
+                  >
+                    LIVE
+                  </span>
+                </div>
+                <ArrowRight size={15} strokeWidth={2.5} className={styles.routeArrow} />
               </button>
             ))}
           </div>
-        </div>
-      </div>
+          </div>
+        </section>
 
-      {/* ── How it works ── */}
-      <section className={styles.section}>
-        <p className={styles.sectionEyebrow}>
-          <span className="energy-bar" />
-          How it works
-        </p>
-        <h2 className={styles.sectionTitle}>Up and running in 60 seconds</h2>
-        <p className={styles.sectionSub}>
-          No configuration, no waiting. Just sign up and start tracking.
-        </p>
+        {/* ── Dark CTA ── */}
+        <section className={styles.darkCta}>
+          <div className={styles.darkCtaInner}>
+            <div className={styles.darkCtaBlur1} />
+            <div className={styles.darkCtaBlur2} />
+            <div className={styles.darkCtaGrid}>
+              <div className={styles.darkCtaLeft}>
+                <h2 className={styles.darkCtaTitle}>
+                  Join {STOPS.length > 0 ? "15,000+" : "thousands of"} Students Moving Smarter.
+                </h2>
+                <p className={styles.darkCtaSub}>
+                  Sign up today and transform your campus commute into a
+                  seamless experience — no more guessing, no more waiting.
+                </p>
+                <div className={styles.darkCtaBtns}>
+                  <button
+                    className={styles.darkCtaBtnWhite}
+                    onClick={() => navigate("/signup")}
+                  >
+                    Create Free Account
+                  </button>
+                  <button
+                    className={styles.darkCtaBtnGhost}
+                    onClick={() => navigate("/login")}
+                  >
+                    Sign In
+                  </button>
+                </div>
+              </div>
 
-        <div className={styles.stepsGrid}>
-          {STEPS.map(({ num, title, desc }) => (
-            <div key={num} className={styles.step}>
-              <span className={styles.stepNum}>{num}</span>
-              <h3 className={styles.stepTitle}>{title}</h3>
-              <p className={styles.stepDesc}>{desc}</p>
+              <div className={styles.darkCtaRight}>
+                {/* App preview mockup */}
+                <div className={styles.phoneMockup}>
+                  {/* Status bar */}
+                  <div className={styles.appStatusBar}>
+                    <span className={styles.appTime}>9:41</span>
+                    <div className={styles.appStatusIcons}>
+                      <span className={styles.appSignal} />
+                      <span className={styles.appBattery} />
+                    </div>
+                  </div>
+
+                  {/* Map area */}
+                  <div className={styles.appMap}>
+                    <div className={styles.appMapGrid} />
+                    <svg className={styles.appMapSvg} viewBox="0 0 220 160" fill="none">
+                      <path d="M20 130 Q60 60 110 80 T200 40" stroke="#c0392b" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                      <path d="M10 40 Q80 110 140 70 T210 120" stroke="#2980b9" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                      <path d="M30 150 Q100 50 180 90" stroke="#f39c12" strokeWidth="2" strokeLinecap="round" opacity="0.7" />
+                    </svg>
+                    {/* Live bus dot */}
+                    <div className={styles.appBusDot}>
+                      <div className={styles.appBusDotRing} />
+                      <Navigation size={9} color="#fff" strokeWidth={2.5} />
+                    </div>
+                    {/* Stop pins */}
+                    <div className={styles.appStopPin} style={{ top: "28%", left: "18%" }} />
+                    <div className={styles.appStopPin} style={{ top: "55%", left: "46%" }} />
+                    <div className={styles.appStopPin} style={{ top: "35%", left: "72%" }} />
+                    {/* ETA chip */}
+                    <div className={styles.appEtaChip}>
+                      <span className={styles.appEtaPulse} />
+                      2 min
+                    </div>
+                  </div>
+
+                  {/* Bottom sheet */}
+                  <div className={styles.appSheet}>
+                    <div className={styles.appSheetHandle} />
+                    <p className={styles.appSheetTitle}>Next arrivals</p>
+                    {[
+                      { color: "#c0392b", name: "Route A · Main Gate", eta: "2 min" },
+                      { color: "#2980b9", name: "Route B · Library",   eta: "5 min" },
+                      { color: "#27ae60", name: "Route D · Hostels",   eta: "9 min" },
+                    ].map((item) => (
+                      <div key={item.name} className={styles.appArrivalRow}>
+                        <span className={styles.appArrivalDot} style={{ background: item.color }} />
+                        <span className={styles.appArrivalName}>{item.name}</span>
+                        <span className={styles.appArrivalEta}>{item.eta}</span>
+                      </div>
+                    ))}
+                  </div>
+
+                  {/* Bottom nav */}
+                  <div className={styles.appBottomNav}>
+                    <div className={`${styles.appNavItem} ${styles.appNavActive}`}>
+                      <Home size={16} strokeWidth={2} />
+                    </div>
+                    <div className={styles.appNavItem}>
+                      <Map size={16} strokeWidth={2} />
+                    </div>
+                    <div className={styles.appNavItem}>
+                      <Clock size={16} strokeWidth={2} />
+                    </div>
+                    <div className={styles.appNavItem}>
+                      <Bell size={16} strokeWidth={2} />
+                    </div>
+                  </div>
+                </div>
+              </div>
             </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ── Final CTA ── */}
-      <section className={styles.ctaSection}>
-        <h2 className={styles.ctaSectionTitle}>
-          Ready to track your shuttle?
-        </h2>
-        <p className={styles.ctaSectionSub}>
-          Join your fellow students and never wait blindly at a bus stop again.
-        </p>
-        <div className={styles.ctaSectionBtns}>
-          <button
-            className={styles.ctaPrimary}
-            onClick={() => navigate("/signup")}
-          >
-            Create Free Account
-            <ChevronRight size={16} strokeWidth={2.5} />
-          </button>
-          <button
-            className={styles.ctaSecondary}
-            onClick={() => navigate("/login")}
-          >
-            Already have an account?
-          </button>
-        </div>
-      </section>
+          </div>
+        </section>
+      </main>
 
       {/* ── Footer ── */}
       <footer className={styles.footer}>
-        © {new Date().getFullYear()} Campus Transit · University Shuttle Tracking
+        <div className={styles.footerInner}>
+          <div>
+            <p className={styles.footerBrand}>Campus Transit</p>
+            <p className={styles.footerCopy}>
+              © {new Date().getFullYear()} Campus Transit. Velocity in Stillness.
+            </p>
+          </div>
+          <div className={styles.footerLinks}>
+            <a className={styles.footerLink} href="#">Privacy Policy</a>
+            <a className={styles.footerLink} href="#">Terms of Service</a>
+            <a className={styles.footerLink} href="#">Campus Map</a>
+            <a className={styles.footerLink} href="#">Contact Support</a>
+          </div>
+        </div>
       </footer>
     </div>
   );

@@ -2,56 +2,49 @@ import { Marker } from "react-map-gl/mapbox";
 import { ROUTES } from "../../services/mockShuttleData";
 import { getBusPosition } from "../../utils/calculateETA";
 import type { Bus } from "../../types/shuttle";
-import Colors from "../../theme/colors";
 
 interface Props {
   bus: Bus;
   onClick: (bus: Bus) => void;
 }
 
+const ROUTE_ICONS: Record<string, string> = {
+  A: "/icons/red.png",
+  B: "/icons/blue.png",
+  C: "/icons/yellow.png",
+  D: "/icons/green.png",
+};
+
 export default function BusMarker({ bus, onClick }: Props) {
   const [lng, lat] = getBusPosition(bus);
   const route = ROUTES[bus.routeId];
   const isDwelling = bus.dwellRemaining > 0;
+  const icon = ROUTE_ICONS[bus.routeId] ?? "/icons/red.png";
 
   return (
-    <Marker longitude={lng} latitude={lat} anchor="center">
+    <Marker longitude={lng} latitude={lat} anchor="bottom">
       <div
         onClick={(e) => {
           e.stopPropagation();
           onClick(bus);
         }}
+        title={bus.name}
         style={{
-          width: 44,
-          height: 44,
-          display: "flex",
-          alignItems: "center",
-          justifyContent: "center",
           cursor: "pointer",
+          filter: isDwelling
+            ? `drop-shadow(0 0 8px ${route.color}cc)`
+            : "drop-shadow(0 2px 4px rgba(0,0,0,0.35))",
+          transform: isDwelling ? "scale(1.12)" : "scale(1)",
+          transition: "transform 0.2s ease, filter 0.2s ease",
+          width: 52,
+          height: 52,
         }}
       >
-        <div
-          onClick={() => onClick(bus)}
-          title={bus.name}
-          style={{
-            width: 36,
-            height: 36,
-            borderRadius: "50%",
-            backgroundColor: route.color,
-            border: `3px solid ${Colors.surface_container_lowest}`,
-            boxShadow: isDwelling
-              ? `0 0 0 4px ${route.color}44`
-              : `0 2px 8px rgba(0,14,36,0.4)`,
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            cursor: "pointer",
-            fontSize: 18,
-            transition: "transform 0.1s ease",
-          }}
-        >
-          🚌
-        </div>
+        <img
+          src={icon}
+          alt={`${route.name} bus`}
+          style={{ width: "100%", height: "100%", objectFit: "contain" }}
+        />
       </div>
     </Marker>
   );

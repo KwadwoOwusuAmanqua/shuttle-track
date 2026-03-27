@@ -4,7 +4,6 @@ import "./index.css";
 import "./styles/style.css";
 import AppRouter from "./router/AppRouter.tsx";
 import { AuthProvider } from "./context/react-context.tsx";
-import { Home } from "lucide-react";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>

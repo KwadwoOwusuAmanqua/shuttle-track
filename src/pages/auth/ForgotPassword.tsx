@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
-import { sendPasswordReset } from "../../services/auth";
+import { handleForgotPassword } from "../../lib/auth-actions";
 import "../../styles/auth.css";
 
 export default function ForgotPasswordPage() {
@@ -14,20 +14,14 @@ export default function ForgotPasswordPage() {
     setError(null);
     setSubmitting(true);
     try {
-      await sendPasswordReset(email);
-      setSent(true);
-    } catch (err: unknown) {
-      const code = (err as { code?: string })?.code ?? "";
-      if (code === "auth/user-not-found") {
-        setError("No account found with that email address.");
-      } else if (code === "auth/invalid-email") {
-        setError("Please enter a valid email address.");
-      } else if (code === "auth/too-many-requests") {
-        setError("Too many requests. Please wait a moment and try again.");
+      const result = await handleForgotPassword(email);
+      if (result.success) {
+        setSent(true);
       } else {
-        const msg = err instanceof Error ? err.message : String(err);
-        setError(msg || "Could not send reset link. Please try again.");
+        throw result.error;
       }
+    } catch {
+      setError("Could not send reset link. Please check the email address.");
     } finally {
       setSubmitting(false);
     }
