@@ -24,13 +24,16 @@
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
   border-bottom: 1px solid rgba(44, 47, 46, 0.06);
+  /* Top safe area pushes header below notch when sticky */
+  padding-top: env(safe-area-inset-top, 0px);
 }
 
 .nav {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 40px;
+  /* sides: landscape notch (iPhone SE/Pro in landscape) */
+  padding: 0 max(40px, env(safe-area-inset-right, 40px)) 0 max(40px, env(safe-area-inset-left, 40px));
   height: 64px;
   max-width: 1280px;
   margin: 0 auto;
@@ -1023,16 +1026,17 @@
 }
 
 @media (max-width: 640px) {
-  .nav { padding: 0 20px; }
+  .nav { padding: 0 max(20px, env(safe-area-inset-right, 20px)) 0 max(20px, env(safe-area-inset-left, 20px)); }
   .navLinks { display: none; }
   .navSignIn { display: none; }
-  .hero { padding: 40px 20px 56px; }
-  .bentoSection { padding: 56px 20px; }
+  .hero { padding: 40px max(20px, env(safe-area-inset-right, 20px)) 56px max(20px, env(safe-area-inset-left, 20px)); }
+  .bentoSection { padding: 56px max(20px, env(safe-area-inset-right, 20px)) 56px max(20px, env(safe-area-inset-left, 20px)); }
   .bentoGrid { grid-template-columns: 1fr; }
   .bentoLarge { grid-column: span 1; }
-  .routesSection { padding: 56px 20px; }
-  .darkCta { padding: 40px 20px; }
+  .routesSection { padding: 56px max(20px, env(safe-area-inset-right, 20px)) 56px max(20px, env(safe-area-inset-left, 20px)); }
+  .darkCta { padding: 40px max(20px, env(safe-area-inset-right, 20px)) 40px max(20px, env(safe-area-inset-left, 20px)); }
   .darkCtaInner { padding: 36px 24px; border-radius: 1.5rem; }
-  .footer { padding: 24px 20px; }
+  /* footer needs bottom safe area for home indicator */
+  .footer { padding: 24px max(20px, env(safe-area-inset-right, 20px)) calc(24px + env(safe-area-inset-bottom, 0px)) max(20px, env(safe-area-inset-left, 20px)); }
   .footerInner { flex-direction: column; align-items: flex-start; }
 }

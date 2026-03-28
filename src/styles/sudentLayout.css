@@ -4,6 +4,9 @@
   display: flex;
   flex-direction: column;
   height: 100dvh;
+  /* Push content below notch / Dynamic Island */
+  padding-top: env(safe-area-inset-top, 0px);
+  /* Dock already handles bottom via its own env() padding */
 }
 
 /* ── Floating dock wrapper ───────────────────────────── */

@@ -230,9 +230,14 @@
   align-items: center;
   justify-content: center;
   min-height: 100dvh;
-  padding: 2rem 1.5rem 1.5rem;
+  /* top: notch; sides: landscape notch; bottom: home indicator */
+  padding-top: max(2rem, calc(2rem + env(safe-area-inset-top, 0px)));
+  padding-left: max(1.5rem, calc(1.5rem + env(safe-area-inset-left, 0px)));
+  padding-right: max(1.5rem, calc(1.5rem + env(safe-area-inset-right, 0px)));
+  padding-bottom: max(1.5rem, calc(1.5rem + env(safe-area-inset-bottom, 0px)));
   position: relative;
   overflow-y: auto;
+  overscroll-behavior-y: contain;
 }
 
 /* Ambient gradient blobs */
@@ -540,8 +545,12 @@
   justify-content: center;
   align-items: center;
   background: var(--surface-container-lowest);
-  padding: 2rem 1.5rem;
+  padding-top: max(2rem, calc(2rem + env(safe-area-inset-top, 0px)));
+  padding-left: max(1.5rem, calc(1.5rem + env(safe-area-inset-left, 0px)));
+  padding-right: max(1.5rem, calc(1.5rem + env(safe-area-inset-right, 0px)));
+  padding-bottom: max(2rem, calc(2rem + env(safe-area-inset-bottom, 0px)));
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   min-height: 100dvh;
 }
 
@@ -776,8 +785,12 @@
   justify-content: center;
   align-items: center;
   background: var(--surface);
-  padding: 2rem 1.5rem;
+  padding-top: max(2rem, calc(2rem + env(safe-area-inset-top, 0px)));
+  padding-left: max(1.5rem, calc(1.5rem + env(safe-area-inset-left, 0px)));
+  padding-right: max(1.5rem, calc(1.5rem + env(safe-area-inset-right, 0px)));
+  padding-bottom: max(2rem, calc(2rem + env(safe-area-inset-bottom, 0px)));
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   min-height: 100dvh;
 }
 

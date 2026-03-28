@@ -100,6 +100,7 @@
   flex: 1;
   min-height: 0; /* flex child must opt-in to shrinking for overflow-y: auto to work */
   overflow-y: auto;
+  overscroll-behavior-y: contain;
   background: var(--surface);
 }
 
@@ -446,7 +447,11 @@
     height: auto;
     flex-direction: row;
     align-items: center;
-    padding: 10px 12px;
+    /* top: notch / Dynamic Island; sides: landscape notch */
+    padding-top: calc(10px + env(safe-area-inset-top, 0px));
+    padding-left: calc(12px + env(safe-area-inset-left, 0px));
+    padding-right: calc(12px + env(safe-area-inset-right, 0px));
+    padding-bottom: 10px;
     gap: 0;
     border-right: none;
     border-bottom: 1px solid var(--outline-variant);
