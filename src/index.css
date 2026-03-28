@@ -80,10 +80,25 @@
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-html,
+html {
+  width: 100%;
+  /* Step 1: -webkit-fill-available = visual viewport on iOS Safari < 15.4.
+     This must come BEFORE 100dvh so modern browsers override it, but old
+     iOS Safari (which ignores 100dvh) still picks up -webkit-fill-available. */
+  height: -webkit-fill-available;
+  height: 100dvh;
+  overflow: hidden;
+  background: var(--surface);
+  color: var(--on-surface);
+}
+
 body {
   width: 100%;
+  /* Inherit html's computed height (now dvh-correct) instead of re-resolving
+     against the ICB, which is what a bare height: 100% would do on iOS. */
   height: 100%;
+  /* Belt-and-suspenders: older iOS sometimes needs this on body too */
+  min-height: -webkit-fill-available;
   overflow: hidden;
   background: var(--surface);
   color: var(--on-surface);
