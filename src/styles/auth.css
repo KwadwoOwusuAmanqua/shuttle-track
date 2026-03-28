@@ -4,7 +4,7 @@
 
 /* ── Shared page shell ──────────────────────────────── */
 .auth-page {
-  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
   width: 100%;
   background: var(--surface);
   color: var(--on-surface);
@@ -229,7 +229,7 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
   /* top: notch; sides: landscape notch; bottom: home indicator */
   padding-top: max(2rem, calc(2rem + env(safe-area-inset-top, 0px)));
   padding-left: max(1.5rem, calc(1.5rem + env(safe-area-inset-left, 0px)));
@@ -419,7 +419,7 @@
 .signup-page {
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
   overflow: auto;
 }
 
@@ -441,7 +441,7 @@
   .signup-hero {
     display: flex;
     width: 42%;
-    min-height: 100dvh;
+    min-height: var(--app-height, 100dvh);
     align-items: center;
     justify-content: center;
     padding: 3rem;
@@ -551,7 +551,7 @@
   padding-bottom: max(2rem, calc(2rem + env(safe-area-inset-bottom, 0px)));
   overflow-y: auto;
   overscroll-behavior-y: contain;
-  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
 }
 
 .signup-form-inner {
@@ -679,7 +679,7 @@
 .forgot-page {
   display: flex;
   flex-direction: column;
-  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
   overflow: auto;
 }
 
@@ -701,7 +701,7 @@
   .forgot-hero {
     display: flex;
     width: 40%;
-    min-height: 100dvh;
+    min-height: var(--app-height, 100dvh);
     align-items: center;
     justify-content: center;
     padding: 3rem;
@@ -791,7 +791,7 @@
   padding-bottom: max(2rem, calc(2rem + env(safe-area-inset-bottom, 0px)));
   overflow-y: auto;
   overscroll-behavior-y: contain;
-  min-height: 100dvh;
+  min-height: var(--app-height, 100dvh);
 }
 
 .forgot-form-inner {

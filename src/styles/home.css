@@ -10,7 +10,7 @@
   padding-left: calc(clamp(8px, 2vw, 16px) + env(safe-area-inset-left, 0px));
   padding-right: calc(clamp(8px, 2vw, 16px) + env(safe-area-inset-right, 0px));
   padding-bottom: clamp(8px, 2vw, 16px);
-  height: 100dvh;
+  height: var(--app-height, 100dvh);
   box-sizing: border-box;
 }
 

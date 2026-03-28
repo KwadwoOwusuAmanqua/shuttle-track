@@ -80,25 +80,10 @@
   font-family: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
 }
 
-html {
-  width: 100%;
-  /* Step 1: -webkit-fill-available = visual viewport on iOS Safari < 15.4.
-     This must come BEFORE 100dvh so modern browsers override it, but old
-     iOS Safari (which ignores 100dvh) still picks up -webkit-fill-available. */
-  height: -webkit-fill-available;
-  height: 100dvh;
-  overflow: hidden;
-  background: var(--surface);
-  color: var(--on-surface);
-}
-
+html,
 body {
   width: 100%;
-  /* Inherit html's computed height (now dvh-correct) instead of re-resolving
-     against the ICB, which is what a bare height: 100% would do on iOS. */
   height: 100%;
-  /* Belt-and-suspenders: older iOS sometimes needs this on body too */
-  min-height: -webkit-fill-available;
   overflow: hidden;
   background: var(--surface);
   color: var(--on-surface);
@@ -106,7 +91,10 @@ body {
 
 #root {
   width: 100%;
-  height: 100%;
+  /* --app-height is set by JS in main.tsx using window.innerHeight — the only
+     reliable measurement of the actual visible pixels on iOS Safari.
+     Falls back to 100dvh for SSR / JS-disabled environments. */
+  height: var(--app-height, 100dvh);
 }
 
 /* ── Typography Utility Classes ──────────────────────── */

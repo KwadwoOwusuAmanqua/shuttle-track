@@ -4,7 +4,7 @@
 /* ── Page — scroll container ────────────────────────────── */
 .page {
   width: 100%;
-  height: 100dvh;          /* constrained so overflow-y: auto creates scroll */
+  height: var(--app-height, 100dvh); /* JS variable always tracks actual visible pixels on iOS */
   overflow-y: auto;
   overflow-x: hidden;
   scroll-behavior: smooth;

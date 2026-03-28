@@ -3,7 +3,7 @@
    ═══════════════════════════════════════════════════ */
 .admin-layout {
   display: flex;
-  height: 100dvh;
+  height: var(--app-height, 100dvh);
   overflow: hidden;
   background: var(--surface);
   font-family: 'Inter', sans-serif;
@@ -438,7 +438,7 @@
 @media (max-width: 768px) {
   .admin-layout {
     flex-direction: column;
-    height: 100dvh; /* dvh accounts for mobile browser chrome (address bar) collapsing */
+    height: var(--app-height, 100dvh); /* JS variable always tracks actual visible pixels on iOS */
   }
 
   /* ── Sidebar → horizontal top bar ── */
