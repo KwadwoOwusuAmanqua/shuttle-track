@@ -11,7 +11,8 @@
 
 /* ── Sidebar ── */
 .admin-sidebar {
-  width: 230px;
+  /* fluid: 180px minimum, grows to 230px, never fixed at one pixel width */
+  width: clamp(180px, 18vw, 230px);
   flex-shrink: 0;
   background: var(--surface-container-low);
   border-right: 1px solid var(--outline-variant);
@@ -109,7 +110,8 @@
    ═══════════════════════════════════════════════════ */
 .manager {
   display: grid;
-  grid-template-columns: 380px 1fr;
+  /* form panel: fluid between 260px and 380px; list panel: fills the rest */
+  grid-template-columns: minmax(260px, 380px) 1fr;
   grid-template-rows: auto 1fr;
   gap: 0;
   height: 100%;
@@ -213,7 +215,8 @@
 
 .form-row-cols-3 {
   display: grid;
-  grid-template-columns: 1fr 1fr 80px;
+  /* equal thirds — avoids the brittle 80px fixed last column */
+  grid-template-columns: 1fr 1fr 1fr;
   gap: 10px;
 }
 
@@ -418,16 +421,11 @@
    ═══════════════════════════════════════════════════ */
 @media (max-width: 1024px) {
   .manager {
+    /* equal split when total width is too narrow for minmax(260px,380px)+1fr */
     grid-template-columns: 1fr 1fr;
   }
 
-  .form-row-cols-3 {
-    grid-template-columns: 1fr 1fr;
-  }
-
-  .form-row-cols-3 > label:last-child {
-    grid-column: 1 / -1;
-  }
+  /* form-row-cols-3 already equal thirds — no override needed */
 }
 
 /* ═══════════════════════════════════════════════════
