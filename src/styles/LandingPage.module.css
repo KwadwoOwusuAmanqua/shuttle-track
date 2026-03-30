@@ -208,6 +208,16 @@
 
 .avatar:first-child { margin-left: 0; }
 
+.avatarLetter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  font-family: 'Plus Jakarta Sans', sans-serif;
+  font-size: 14px;
+  font-weight: 700;
+}
+
 .avatarCount {
   width: 36px;
   height: 36px;

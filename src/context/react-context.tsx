@@ -31,26 +31,24 @@ function clearCache() {
 }
 
 export function AuthProvider({ children }: { children: ReactNode }) {
-  // Seed state from cache — returning users get their profile synchronously,
-  // so loading can resolve without waiting for Firestore.
   const [user, setUser] = useState<UserProfile | null>(readCache);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    let resolved = false;
+
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
+      resolved = true;
       if (firebaseUser) {
         const cached = readCache();
         if (cached && cached.uid === firebaseUser.uid) {
-          // Already have a valid profile — unblock rendering immediately.
           setUser(cached);
           setLoading(false);
-          // Refresh in the background in case role/name changed.
           fetchUserProfile(firebaseUser).then((fresh) => {
             setUser(fresh);
             writeCache(fresh);
           });
         } else {
-          // First login or different account — must wait for Firestore.
           const profile = await fetchUserProfile(firebaseUser);
           writeCache(profile);
           setUser(profile);
@@ -62,7 +60,18 @@ export function AuthProvider({ children }: { children: ReactNode }) {
         setLoading(false);
       }
     });
-    return unsubscribe;
+
+    const timeout = setTimeout(() => {
+      if (!resolved) {
+        setUser(null);
+        setLoading(false);
+      }
+    }, 3000);
+
+    return () => {
+      unsubscribe();
+      clearTimeout(timeout);
+    };
   }, []);
 
   return (

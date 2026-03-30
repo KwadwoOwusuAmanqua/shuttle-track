@@ -63,21 +63,9 @@ export default function LandingPage() {
 
                 <div className={styles.avatarRow}>
                   <div className={styles.avatarStack}>
-                    <img
-                      className={styles.avatar}
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuDRuj6MVPri-FtGr-L_k18TnO-JR-YOZIMjAIcvX-H_NMyaGXivHAexrWyX3vFUqV7VHLuY2lQkYb6zXa6bTPxdv0vTq99lwzwu96JZGem7fnYInyJg-RlKpsHCgjWncsTOcUkIBp2AfeNue3DoIQDXhyHWKX-BaPxt7FJb-EQzay90_4XwBwnY_lXs7wA2F9REJCo7PkAMpsvJtgIT6T7diOVAUrVliSwF0puFxr4jpZ461nxYfohVUyqSBH9MaRScJ1HgXK9uuok"
-                      alt="Student"
-                    />
-                    <img
-                      className={styles.avatar}
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuBh9t5KPOODrHmAcumTzxNVS52ZGnEsPB3RYGsbPPhaFLI_e-KT1zqelGxYaN099r8VOmty4rPNZkbWnsoX2RmYQ20uzoF_epYr8a4dQGfrHTtw5EKS7r5NPM-ysDazoFV3rhtmVWOxD7jCQcZbWDIr2cFC_XYfRUuuJ26iTePLrv_FxF5UVvBgNjueidG2iF7u7YPPJUrNqn0kraSZPWKS5qgUne74iruEb2CUFfjDue3YGAHaLGhzWQWV43TH8VK_DhbpbfzcYfw"
-                      alt="Student"
-                    />
-                    <img
-                      className={styles.avatar}
-                      src="https://lh3.googleusercontent.com/aida-public/AB6AXuCfoLFWxgnTvqqQmka_0InDlrcFw3Rc3-BGwrs7OMuw4Nn38QJSw06SpsUxQQ73AAp4pvLe7PZWFlOmqeza2-ule5cXAiJS_g9475QcJ-D6H3w2aLyNF5PsaR3mGc0J_pBcZCP1z4qYAa4cM4ZSEbn4iBJ1dO3otQUYHhcnNMRte0z_8qRfZ3ZrLkkjUrgbKJwQW4GvQNHKi_5jxaDQDpk8upFm71SlqIvJRQYBIxaAF7ovwid5PV_ls_MhID_JbSVJHnAuXefNZbE"
-                      alt="Student"
-                    />
+                    <div className={`${styles.avatar} ${styles.avatarLetter}`} style={{ background: "#006b12" }}>A</div>
+                    <div className={`${styles.avatar} ${styles.avatarLetter}`} style={{ background: "#2980b9" }}>K</div>
+                    <div className={`${styles.avatar} ${styles.avatarLetter}`} style={{ background: "#8e44ad" }}>M</div>
                     <div className={styles.avatarCount}>+2k</div>
                   </div>
                   <span className={styles.avatarLabel}>Joined the flow</span>
@@ -91,7 +79,7 @@ export default function LandingPage() {
               <div className={styles.heroImageWrap}>
                 <img
                   className={styles.heroImage}
-                  src="https://lh3.googleusercontent.com/aida/ADBb0ugpnkxqP8yHYGUg7xjYfGyXc9KtH6uRjc0wlt5xyHwcU0yn-U9GVoxJiiIkhYdjBsl7t4QmSPk3D4l8hZSG-OTDMqwiK1tcxctruo85Yr0A5e3JhGar0qk2NFMdLag2KUkVOB7cq4Fk9iG3kdvFpKCRwJkt1sWxmvB0w1zpwrCEbhhxLyNJonnWys9HW5lYEVrA_qTAERjafpTL5IZqNaojG0PY4U44E7U2rDjo8IovUxz0C2sP8Wkz7ZgKvBkN4wengIIYiXXpjQ"
+                  src="/shuttle.jpg"
                   alt="Campus shuttle bus"
                 />
 
