@@ -10,7 +10,10 @@
   padding-left: calc(clamp(8px, 2vw, 16px) + env(safe-area-inset-left, 0px));
   padding-right: calc(clamp(8px, 2vw, 16px) + env(safe-area-inset-right, 0px));
   padding-bottom: clamp(8px, 2vw, 16px);
-  height: var(--app-height, 100dvh);
+  /* flex: 1 fills the remaining space in the parent .page flex column (after the dock).
+     height: 100dvh here would overflow past the dock. */
+  flex: 1;
+  min-height: 0;
   box-sizing: border-box;
 }
 
